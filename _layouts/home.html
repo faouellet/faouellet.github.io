@@ -55,7 +55,7 @@ layout: page
 
     <div class="post-content">
       <p>
-        {% include no-linenos.html content=post.content %}
+        {% include no-linenos.html content=post.excerpt %}
         {{ content | markdownify | strip_html | truncate: 200 }}
       </p>
     </div>
