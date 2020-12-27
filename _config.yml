@@ -6,42 +6,38 @@
 
 
 # jekyll-seo-tag settings › https://github.com/jekyll/jekyll-seo-tag/blob/master/docs/usage.md
-# --------------------------
-title: Chirpy                          # the main title
+#--------------------------
 
-tagline: A text-focused Jekyll theme.  # it will display as the sub-title
+title: /* Insert Code Here */                          # the main title
+
+tagline:   # it will display as the sub-title
 
 description: >-                        # used by seo meta and the atom feed
-  A minimal, portfolio, sidebar,
-  bootstrap Jekyll theme with responsive web design
-  and focuses on text presentation.
+  My personal blog.
 
-# fill in the base hostname & protocol for your site, e.g., 'https://username.github.io'
-url: ''
+# Replace with the website url, e.g. 'https://username.github.io'
+url: 'https://faouellet.github.io/'
 
-author: your_full_name                  # change to your full name
+author: Félix-Antoine Ouellet                  # change to your full name
 
-avatar: /assets/img/sample/avatar.jpg   # support internet resources
+avatar: /assets/img/avatar.jpg   # support internet resources
 
 github:
-  username: github_username             # change to your github username
-
-twitter:
-  username: twitter_username            # change to your twitter username
+  username: faouellet             # change to your github username
 
 social:
-  name: your_full_name                  # it will shows as the copyright owner in Footer
-  email: example@doamin.com             # change to your email address
+  name: Félix-Antoine Ouellet                  # it will shows as the copyright owner in Footer
+  email: faouellet@gmail.com             # change to your email address
   links:
     # The first element serves as the copyright owner's link
-    - https://twitter.com/username      # change to your twitter homepage
-    - https://github.com/username       # change to your github homepage
+    - https://github.com/faouellet       # change to your github homepage
     # Uncomment below to add more social links
     # - https://www.facebook.com/username
-    # - https://www.linkedin.com/in/username
+    - https://www.linkedin.com/felixantoineouellet
 
-google_site_verification: google_meta_tag_verification # change to your verification string
-# --------------------------
+google_site_verification:  # change to your verification string
+
+#--------------------------
 
 
 # Only if your site type is GitHub Project sites and doesn't have a custom domain,
@@ -49,10 +45,10 @@ google_site_verification: google_meta_tag_verification # change to your verifica
 baseurl: ''
 
 # Change to your timezone › http://www.timezoneconverter.com/cgi-bin/findzone/findzone
-timezone: Asia/Shanghai
+timezone: America/Toronto
 
 google_analytics:
-  id: ''          # Fill with your Google Analytics ID
+  id: 'UA-71911238-1'          # Fill with your Google Analytics ID
   pv:
     # The Google Analytics pageviews switch.
     # DO NOT enable it unless you know how to deploy the Google Analytics superProxy.
@@ -63,8 +59,8 @@ google_analytics:
     cache: false  # pv data local cache, good for the users from GFW area.
 
 disqus:
-  comments: false  # boolean type, the global switch for posts comments.
-  shortname: ''    # Fill with your Disqus shortname. › https://help.disqus.com/en/articles/1717111-what-s-a-shortname
+  comments: true  # boolean type, the global switch for posts comments.
+  shortname: 'insertcodehere'    # Fill with your Disqus shortname. › https://help.disqus.com/en/articles/1717111-what-s-a-shortname
 
 
 # Prefer color scheme setting.
@@ -79,17 +75,22 @@ disqus:
 #
 #     dark   - Use the dark color scheme
 #
-theme_mode:   # <light|dark>
+theme_mode: dark
 
-# boolean type, the global switch for ToC in posts.
+# boolean type, global switch for ToC in posts.
 toc: true
 
 paginate: 10
 
+markdown: kramdown
+
+highlighter: rouge
+
 kramdown:
+  input: GFM
   syntax_highlighter: rouge
-  syntax_highlighter_opts:   # Rouge Options › https://github.com/jneen/rouge#full-options
-    css_class: highlight
+  syntax_highlighter_opts: # Rouge Options › https://github.com/jneen/rouge#full-options
+    css_class: 'highlight'
     # default_lang: console
     span:
       line_numbers: false
