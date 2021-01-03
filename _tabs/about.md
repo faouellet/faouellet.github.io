@@ -10,7 +10,7 @@ order: 4
 # MIT License
 ---
 
-This blog serves as a means by which I can share the development of some my personal projects. These will tend to gravitate towards compiler-related technologies as well as parallel systems, the two areas of computer science I am most passionate about. Hopefully, the contents of this blog might be useful to others.
+This blog serves as a means by which I can share the development of some my personal projects. Hopefully, the contents of this blog might be useful to others.
 
 ## Obligatory disclaimer
 
