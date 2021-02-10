@@ -1,0 +1,291 @@
+<!DOCTYPE html><html lang="en" mode="dark" ><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><meta name="theme" content="Chirpy v2.7.1"><meta name="generator" content="Jekyll v4.1.1" /><meta property="og:title" content="Let’s implement a language - Part 1 - The Lexer" /><meta name="author" content="Félix-Antoine Ouellet" /><meta property="og:locale" content="en_US" /><meta name="description" content="In which we teach the compiler to decipher the text of a program." /><meta property="og:description" content="In which we teach the compiler to decipher the text of a program." /><link rel="canonical" href="https://faouellet.github.io//toslang-lexer/" /><meta property="og:url" content="https://faouellet.github.io//toslang-lexer/" /><meta property="og:site_name" content="/* Insert Code Here */" /><meta property="og:type" content="article" /><meta property="article:published_time" content="2016-05-06T00:00:00-04:00" /><meta name="twitter:card" content="summary" /><meta property="twitter:title" content="Let’s implement a language - Part 1 - The Lexer" /> <script type="application/ld+json"> {"description":"In which we teach the compiler to decipher the text of a program.","url":"https://faouellet.github.io//toslang-lexer/","headline":"Let’s implement a language - Part 1 - The Lexer","dateModified":"2016-05-06T00:00:00-04:00","@type":"BlogPosting","datePublished":"2016-05-06T00:00:00-04:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://faouellet.github.io//toslang-lexer/"},"author":{"@type":"Person","name":"Félix-Antoine Ouellet"},"@context":"https://schema.org"}</script><title>Let's implement a language - Part 1 - The Lexer | /* Insert Code Here */</title><link rel="shortcut icon" href="/assets/img/favicons/favicon.ico" type="image/x-icon"><link rel="icon" href="/assets/img/favicons/favicon.ico" type="image/x-icon"><link rel="apple-touch-icon" href="/assets/img/favicons/apple-icon.png"><link rel="apple-touch-icon" href="/assets/img/favicons/apple-icon-precomposed.png"><link rel="apple-touch-icon" sizes="57x57" href="/assets/img/favicons/apple-icon-57x57.png"><link rel="apple-touch-icon" sizes="60x60" href="/assets/img/favicons/apple-icon-60x60.png"><link rel="apple-touch-icon" sizes="72x72" href="/assets/img/favicons/apple-icon-72x72.png"><link rel="apple-touch-icon" sizes="76x76" href="/assets/img/favicons/apple-icon-76x76.png"><link rel="apple-touch-icon" sizes="114x114" href="/assets/img/favicons/apple-icon-114x114.png"><link rel="apple-touch-icon" sizes="120x120" href="/assets/img/favicons/apple-icon-120x120.png"><link rel="apple-touch-icon" sizes="144x144" href="/assets/img/favicons/apple-icon-144x144.png"><link rel="apple-touch-icon" sizes="152x152" href="/assets/img/favicons/apple-icon-152x152.png"><link rel="apple-touch-icon" sizes="180x180" href="/assets/img/favicons/apple-icon-180x180.png"><link rel="icon" type="image/png" sizes="192x192" href="/assets/img/favicons/android-icon-192x192.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicons/favicon-32x32.png"><link rel="icon" type="image/png" sizes="96x96" href="/assets/img/favicons/favicon-96x96.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicons/favicon-16x16.png"><link rel="manifest" href="/assets/img/favicons/manifest.json"><meta name='msapplication-config' content='/assets/img/favicons/browserconfig.xml'><meta name="msapplication-TileColor" content="#ffffff"><meta name="msapplication-TileImage" content="/assets/img/favicons/ms-icon-144x144.png"><meta name="theme-color" content="#ffffff"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://fonts.gstatic.com"><link rel="preconnect" href="https://www.google-analytics.com" crossorigin="use-credentials"><link rel="dns-prefetch" href="https://www.google-analytics.com"><link rel="preconnect" href="https://www.googletagmanager.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><link rel="preconnect" href="cdn.jsdelivr.net"><link rel="dns-prefetch" href="cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha256-LA89z+k9fjgMKQ/kq4OO2Mrf8VltYml/VES+Rg0fh20=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.11.2/css/all.min.css" integrity="sha256-+N4/V/SbAFiW1MPBCXnfnP9QSN3+Keu+NlB+0ev/YKQ=" crossorigin="anonymous"><link rel="preload" href="/assets/css/post.css" as="style"><link rel="stylesheet" href="/assets/css/post.css"><link rel="preload" as="style" href="/assets/css/lib/bootstrap-toc.min.css"><link rel="stylesheet" href="/assets/css/lib/bootstrap-toc.min.css" /> <script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script> <script defer src="https://cdn.jsdelivr.net/combine/npm/popper.js@1.15.0,npm/bootstrap@4/dist/js/bootstrap.min.js"></script> <script async src="/assets/js/post.min.js"></script> <script defer src="/app.js"></script> <script defer src="https://www.googletagmanager.com/gtag/js?id=UA-71911238-1"></script> <script> document.addEventListener("DOMContentLoaded", function(event) { window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'UA-71911238-1'); }); </script><body data-spy="scroll" data-target="#toc"><div id="sidebar" class="d-flex flex-column align-items-end"><div class="profile-wrapper text-center"><div id="avatar"> <a href="/" alt="avatar" class="mx-auto"> <img src="/assets/img/avatar.jpg" alt="avatar" onerror="this.style.display='none'"> </a></div><div class="site-title mt-3"> <a href="/">/* Insert Code Here */</a></div><div class="site-subtitle font-italic"></div></div><ul class="w-100"><li class="nav-item"> <a href="/" class="nav-link"> <i class="fa-fw fas fa-home ml-xl-3 mr-xl-3 unloaded"></i> <span>HOME</span> </a><li class="nav-item"> <a href="/tabs/categories/" class="nav-link"> <i class="fa-fw fas fa-stream ml-xl-3 mr-xl-3 unloaded"></i> <span>CATEGORIES</span> </a><li class="nav-item"> <a href="/tabs/tags/" class="nav-link"> <i class="fa-fw fas fa-tags ml-xl-3 mr-xl-3 unloaded"></i> <span>TAGS</span> </a><li class="nav-item"> <a href="/tabs/archives/" class="nav-link"> <i class="fa-fw fas fa-archive ml-xl-3 mr-xl-3 unloaded"></i> <span>ARCHIVES</span> </a><li class="nav-item"> <a href="/tabs/about/" class="nav-link"> <i class="fa-fw fas fa-info ml-xl-3 mr-xl-3 unloaded"></i> <span>ABOUT</span> </a></ul><div class="sidebar-bottom mt-auto d-flex flex-wrap justify-content-center"> <a href="https://github.com/faouellet" aria-label="github" target="_blank" rel="noopener"> <i class="fab fa-github-alt"></i> </a> <a href="https://www.linkedin.com/in/felixantoineouellet/" aria-label="linkedin" target="_blank" rel="noopener"> <i class="fab fa-linkedin"></i> </a> <a href=" javascript:location.href = 'mailto:' + ['faouellet','gmail.com'].join('@')" aria-label="email" > <i class="fas fa-envelope"></i> </a> <a href="/feed.xml" aria-label="rss" > <i class="fas fa-rss"></i> </a></div></div><div id="topbar-wrapper" class="row justify-content-center topbar-down"><div id="topbar" class="col-11 d-flex h-100 align-items-center justify-content-between"> <span id="breadcrumb"> <span> <a href="/"> Posts </a> </span> <span>Let's implement a language - Part 1 - The Lexer</span> </span> <i id="sidebar-trigger" class="fas fa-bars fa-fw"></i><div id="topbar-title"> Post</div><i id="search-trigger" class="fas fa-search fa-fw"></i> <span id="search-wrapper" class="align-items-center"> <i class="fas fa-search fa-fw"></i> <input class="form-control" id="search-input" type="search" aria-label="search" placeholder="Search..."> <i class="fa fa-times-circle fa-fw" id="search-cleaner"></i> </span> <span id="search-cancel" >Cancel</span></div></div><div id="main-wrapper"><div id="main"><div class="row"><div id="post-wrapper" class="col-12 col-lg-11 col-xl-8"><div class="post pl-1 pr-1 pl-sm-2 pr-sm-2 pl-md-4 pr-md-4"><h1 data-toc-skip>Let's implement a language - Part 1 - The Lexer</h1><div class="post-meta text-muted d-flex flex-column"><div> <span class="timeago " data-toggle="tooltip" data-placement="bottom" title="Fri, May 6, 2016, 12:00 AM -0400" > May 6, 2016 <i class="unloaded">2016-05-06T00:00:00-04:00</i> </span> by <span class="author"> Félix-Antoine Ouellet </span></div><div> <span class="readtime" data-toggle="tooltip" data-placement="bottom" title="1525 words">8 min</span></div></div><div class="post-content"><p>Hey everyone!</p><p>This month marks the beginning of our journey into compiler development territory. For our first steps, we’ll start with an overview of modern compiler architecture and the development of a lexer capable of handling the TosLang programming language.</p><p>As you read along, you might notice that some details are missing from the programming examples. This is intended since some parts of what we are going to implement are quite trivial and repetitive and I didn’t want to obscure the examples by using macros or template metaprogramming. For the full code listing of the TosLang compiler, you just need to go <a href="https://github.com/faouellet/Tostitos">here</a>.</p><p>Now, without further ado, let’s dive into compiler development.</p><h2 id="whats-in-a-compiler">What’s in a compiler?</h2><p>For most programmer a compiler is simply a program that transform the code they have written into an executable. How it achieves this however is a total mystery. In reality, there’s really nothing mysterious about the work a compiler does. It’s just that it’s just such a big piece of software involving so many aspects of software engineering that people often shy away from delving deeper and prefer to let someone else deal with it.</p><figure><p style="text-align:center;"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="/assets/img/someone-else.png" alt="Image: Not this time" /></p><figcaption><span><center><i>Not this time</i></center></span></figcaption></figure><p>Let’s try to eschew the overcomplicated parts and present a high-level overview of a traditional static compiler. The most popular design for this kind of compiler is the three phase design as illustrated below.</p><figure><p style="text-align:center;"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="/assets/img/SimpleCompiler.png" alt="Image: The simplest view of a modern compiler" /></p><figcaption><span><center><i>The simplest view of a modern compiler</i></center></span></figcaption></figure><p>I won’t go into every details here (as as everything will be explained as we implement the compiler) but what you have to know about each part is this:</p><ul><li><strong>Frontend</strong>: Responsible for making sure the program respect the language specification. Can also perform some language-specific optimizations.<li><strong>Optimizer</strong>: Performs analysis and transformation on an intermediate representation of the program to optimize it. Since it works on an intermediate representation, the optimizations done here depends neither on the programming language not the target architecture.<li><strong>Backend</strong>: Performs optimizations based on the architecture the program is being compiled for and generate</ul><h2 id="the-toslang-compiler">The TosLang Compiler</h2><p>Since TosLang is a statically typed language, its compiler will follow the three phase design. However, before even considering to implement one phase, we first need to define what the interface to the TosLang compiler is going to be. As we know, from a regular user point of view, what a compiler does, regardless of the language, is take a file name and use this information to produce an executable file through what may as well be black magic. Thus, as a starting point, I propose the following as a first draft for the TosLang compiler:</p><div class="language-cpp highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre><td class="rouge-code"><pre><span class="k">class</span> <span class="nc">Compiler</span>
+<span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="kt">void</span> <span class="n">Run</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">programFile</span><span class="p">);</span>
+
+<span class="nl">private:</span>
+    <span class="n">Lexer</span> <span class="n">mLex</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></table></code></div></div><p>What this’ll do is take a TosLang program filename and generate an executable with a arbitrarily chosen name (let’s say <em>a.out</em>). Next, let’s implement the Compiler::Run function:</p><div class="language-cpp highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+</pre><td class="rouge-code"><pre><span class="kt">void</span> <span class="n">Compiler</span><span class="o">::</span><span class="n">Run</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">programFile</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">ifstream</span> <span class="n">stream</span><span class="p">{</span> <span class="n">filename</span> <span class="p">};</span>
+  <span class="c1">// Tough we are going to perform magic,</span>
+  <span class="c1">// we can't summon a program out of thin air</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">stream</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Can't open "</span> <span class="o">&lt;&lt;</span> <span class="n">programFile</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="k">return</span><span class="p">;</span>
+  <span class="p">}</span>  
+
+  <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">buffer</span><span class="p">{</span> <span class="n">std</span><span class="o">::</span><span class="n">istreambuf_iterator</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;</span><span class="p">(</span><span class="n">stream</span><span class="p">),</span>
+                      <span class="n">std</span><span class="o">::</span><span class="n">istreambuf_iterator</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;</span><span class="p">{}</span> <span class="p">};</span>
+
+   <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Token</span><span class="o">&gt;</span> <span class="n">toks</span> <span class="o">=</span> <span class="n">mLexer</span><span class="p">.</span><span class="n">Tokenize</span><span class="p">(</span><span class="n">buffer</span><span class="p">);</span>
+
+  <span class="c1">// Further arcane incantations to come...</span>
+<span class="p">}</span>
+</pre></table></code></div></div><p>Notice that I’m using <a href="http://en.cppreference.com/w/cpp/iterator/istreambuf_iterator"><code class="language-plaintext highlighter-rouge">std::istreambuf_iterator</code></a> to fetch the content of the file and build my buffer. The reason behind this choice is that we want the raw unformatted string representing the program and we want it fast which is exactly what we’re going to get by using this iterator.</p><p>After the buffer has been filled, the next thing the method does is build a sequence of tokens out of the buffer. The next section offers insight as to why this must be done.</p><h2 id="what-does-a-lexer-do-anyway">What does a lexer do anyway?</h2><p>Let’s zoom in on the on the compiler design picture.</p><figure><p style="text-align:center;"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="/assets/img/Frontend.png" alt="Image: A compiler frontend" /></p><figcaption><span><center><i>A compiler frontend</i></center></span></figcaption></figure><p>As I mentionned a compiler frontend has the responsibility of making sure the program respects the specification of the language it is written with. To do so, it must ask and answer the three following questions: What is being written? Does it respect the language’s grammar? And does any make sense?</p><p>The role of the lexer is to answer the first of these questions. So for each element of the program the lexer has to identify what elements of the programming language are being used. Is is a integer literal? Is it a keyword? If so, which is it? Each time it finds an answer, a token will be associated with the program element (keyword, identifier, operator and so on). Thus, when it has gone over all the program, it will have a sequence of tokens to give off to the next phase of the frontend i.e. the parser.</p><h2 id="implementation">Implementation</h2><p>The first part of the implementation of a programming language is to define what tokens will there be to identify. For TosLang, the tokens will be as follows:</p><div class="language-cpp highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+</pre><td class="rouge-code"><pre><span class="k">enum</span> <span class="k">class</span> <span class="nc">Token</span>
+<span class="p">{</span>
+    <span class="c1">// Keywords</span>
+    <span class="n">FUNCTION</span><span class="p">,</span> <span class="n">IF</span><span class="p">,</span> <span class="n">PRINT</span><span class="p">,</span> <span class="n">RETURN</span><span class="p">,</span> <span class="n">SCAN</span><span class="p">,</span> <span class="n">SPAWN</span><span class="p">,</span>
+    <span class="n">SYNC</span><span class="p">,</span> <span class="n">TYPE</span><span class="p">,</span> <span class="n">VAR</span><span class="p">,</span> <span class="n">WHILE</span><span class="p">,</span>
+
+    <span class="c1">// Boolean values</span>
+    <span class="n">FALSE</span><span class="p">,</span> <span class="n">TRUE</span><span class="p">,</span>
+
+    <span class="c1">// Operators</span>
+    <span class="n">AND_BOOL</span><span class="p">,</span> <span class="n">AND_INT</span><span class="p">,</span> <span class="n">DIVIDE</span><span class="p">,</span> <span class="n">EQUAL</span><span class="p">,</span> <span class="n">GREATER_THAN</span><span class="p">,</span>
+    <span class="n">LEFT_SHIFT</span><span class="p">,</span> <span class="n">LESS_THAN</span><span class="p">,</span> <span class="n">MINUS</span><span class="p">,</span> <span class="n">MODULO</span><span class="p">,</span> <span class="n">MULT</span><span class="p">,</span>
+    <span class="n">NOT</span><span class="p">,</span> <span class="n">OR_BOOL</span><span class="p">,</span> <span class="n">OR_INT</span><span class="p">,</span> <span class="n">PLUS</span><span class="p">,</span> <span class="n">RIGHT_SHIFT</span><span class="p">,</span>
+    <span class="n">OP_START</span> <span class="o">=</span> <span class="n">AND_BOOL</span><span class="p">,</span> <span class="n">OP_END</span> <span class="o">=</span> <span class="n">RIGHT_SHIFT</span><span class="p">,</span>
+
+    <span class="c1">// Misc</span>
+    <span class="n">ARROW</span><span class="p">,</span> <span class="n">COMMA</span><span class="p">,</span> <span class="n">COMMENT</span><span class="p">,</span> <span class="n">COLON</span><span class="p">,</span> <span class="n">IDENTIFIER</span><span class="p">,</span>
+    <span class="n">LEFT_BRACE</span><span class="p">,</span> <span class="n">LEFT_BRACKET</span><span class="p">,</span> <span class="n">LEFT_PAREN</span><span class="p">,</span>
+    <span class="n">ML_COMMENT</span><span class="p">,</span> <span class="n">NUMBER</span><span class="p">,</span> <span class="n">STRING_LITERAL</span><span class="p">,</span> <span class="n">SEMI_COLON</span><span class="p">,</span>
+    <span class="n">RIGHT_BRACE</span><span class="p">,</span> <span class="n">RIGHT_BRACKET</span><span class="p">,</span> <span class="n">RIGHT_PAREN</span><span class="p">,</span>
+
+    <span class="c1">// End of file</span>
+    <span class="n">TOK_EOF</span><span class="p">,</span>
+
+    <span class="c1">// Unknown</span>
+    <span class="n">UNKNOWN</span>
+<span class="p">};</span>
+</pre></table></code></div></div><p>Next, let’s define the interface of the lexer.</p><div class="language-cpp highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre><td class="rouge-code"><pre><span class="k">class</span> <span class="nc">Lexer</span>
+<span class="p">{</span>
+<span class="nl">public:</span>
+  <span class="c1">// Insert program, get tokens</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Token</span><span class="o">&gt;</span> <span class="n">Tokenize</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">programStr</span><span class="p">);</span>
+<span class="p">};</span>
+</pre></table></code></div></div><p>I know this doesn’t require a class for the moment. But trust me, it will grow sooner than later.</p><p>Now, let’s dive into the lexer.</p><div class="language-cpp highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+</pre><td class="rouge-code"><pre><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Token</span><span class="o">&gt;</span> <span class="n">Lexer</span><span class="o">::</span><span class="n">Tokenize</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">programStr</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="c1">// Can't extract tokens from nothing</span>
+  <span class="k">if</span><span class="p">(</span><span class="n">programStr</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span>
+    <span class="k">return</span> <span class="p">{};</span>
+
+  <span class="c1">// What we'll produce</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Token</span><span class="o">&gt;</span> <span class="n">toks</span><span class="p">;</span>
+
+  <span class="c1">// What we'll use to go through the program</span>
+  <span class="k">auto</span> <span class="n">programIt</span> <span class="o">=</span> <span class="n">programStr</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span>
+
+  <span class="c1">// Will be used a lot, so we better put it in a variable</span>
+  <span class="k">auto</span> <span class="n">programEnd</span> <span class="o">=</span> <span class="n">programStr</span><span class="p">.</span><span class="n">end</span><span class="p">();</span>
+
+  <span class="c1">// Taking the locale into account</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">locale</span> <span class="n">loc</span><span class="p">{</span><span class="s">""</span><span class="p">};</span>
+
+  <span class="k">while</span><span class="p">(</span><span class="n">programIt</span> <span class="o">!=</span> <span class="n">programEnd</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="c1">// Skip over whitespaces</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">programIt</span> <span class="o">!=</span> <span class="n">programEnd</span> <span class="o">&amp;&amp;</span> <span class="n">isspace</span><span class="p">(</span><span class="o">*</span><span class="n">programIt</span><span class="p">,</span> <span class="n">loc</span><span class="p">))</span>
+      <span class="o">++</span><span class="n">programIt</span><span class="p">;</span>
+
+    <span class="c1">// End of file, we're done</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">programIt</span> <span class="o">==</span> <span class="n">programEnd</span><span class="p">)</span>
+      <span class="k">return</span> <span class="n">Token</span><span class="o">::</span><span class="n">TOK_EOF</span><span class="p">;</span>
+
+    <span class="c1">// Caching the current char because we will use it A LOT</span>
+    <span class="k">const</span> <span class="kt">char</span> <span class="n">currentChar</span> <span class="o">=</span> <span class="o">*</span><span class="n">programIt</span><span class="p">;</span>
+
+    <span class="k">switch</span> <span class="p">(</span><span class="n">currentChar</span><span class="p">)</span>
+    <span class="p">{</span>
+    <span class="k">case</span> <span class="sc">','</span><span class="p">:</span>
+      <span class="o">++</span><span class="n">programIt</span><span class="p">;</span>
+      <span class="n">toks</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">Token</span><span class="o">::</span><span class="n">COMMA</span><span class="p">);</span>
+      <span class="k">break</span><span class="p">;</span>
+
+    <span class="c1">// Lots of similar cases for simple one character tokens</span>
+
+    <span class="nl">default:</span>  
+      <span class="c1">// We have a token coming from a more complex pattern,</span>
+      <span class="c1">// let's find out what</span>
+      <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">currentStr</span><span class="p">;</span>
+
+      <span class="c1">// If this starts with a letter,</span>
+      <span class="c1">// it is either a keyword or an identifier</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">isalpha</span><span class="p">(</span><span class="n">currentChar</span><span class="p">,</span> <span class="n">loc</span><span class="p">))</span>
+      <span class="p">{</span>
+        <span class="c1">// Let's greedily build a string with the pattern</span>
+        <span class="n">currentStr</span> <span class="o">=</span> <span class="n">currentChar</span><span class="p">;</span>
+        <span class="c1">// We accept alphanumeric characters because it is legal for a</span>
+        <span class="c1">// function or variable identifier to contains number</span>
+        <span class="k">while</span> <span class="p">(</span><span class="o">++</span><span class="n">programIt</span> <span class="o">!=</span> <span class="n">programEnd</span> <span class="o">&amp;&amp;</span> <span class="n">isalnum</span><span class="p">(</span><span class="o">*</span><span class="n">programIt</span><span class="p">,</span> <span class="n">loc</span><span class="p">))</span>
+          <span class="n">currentStr</span> <span class="o">+=</span> <span class="o">*</span><span class="n">programIt</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">currentStr</span> <span class="o">==</span> <span class="s">"fn"</span><span class="p">)</span>
+          <span class="n">toks</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">Token</span><span class="o">::::</span><span class="n">FUNCTION</span><span class="p">);</span>
+        <span class="c1">// Other cases where the pattern directly match</span>
+        <span class="c1">// a keyword token...</span>
+        <span class="k">else</span>
+          <span class="c1">// If this doesn't match a keyword,</span>
+          <span class="c1">// then it is a simple identifier</span>
+          <span class="n">toks</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">Token</span><span class="o">:::</span><span class="n">IDENTIFIER</span><span class="p">);</span>
+      <span class="p">}</span>
+      <span class="c1">// It starts with a digit, then it can only be a number</span>
+      <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">isdigit</span><span class="p">(</span><span class="n">currentChar</span><span class="p">,</span> <span class="n">loc</span><span class="p">))</span>
+      <span class="p">{</span>
+        <span class="c1">// Eat up all the digits making up the number</span>
+        <span class="k">while</span> <span class="p">(</span><span class="n">isdigit</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="o">++</span><span class="n">programIt</span><span class="p">,</span> <span class="n">loc</span><span class="p">)));</span>
+
+        <span class="n">toks</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">Token</span><span class="o">::</span><span class="n">NUMBER</span><span class="p">);</span>
+      <span class="p">}</span>
+      <span class="k">else</span>
+      <span class="p">{</span>
+        <span class="c1">// The hell is that?</span>
+        <span class="n">toks</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">Token</span><span class="o">::</span><span class="n">UNKNOWN</span><span class="p">);</span>  
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="n">toks</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></table></code></div></div><h2 id="result">Result</h2><p>In the end, our lexer will be able to take a TosLang program like the one below:</p><div class="language-cpp highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre><td class="rouge-code"><pre><span class="n">fn</span> <span class="n">main</span><span class="p">(</span><span class="n">i</span> <span class="o">:</span> <span class="n">Int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Void</span> <span class="p">{</span>
+  <span class="n">print</span> <span class="s">"Hello World!"</span><span class="p">;</span>
+  <span class="k">return</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></table></code></div></div><p>and produce the following output:</p><p>[FUNCTION], [IDENTIFIER], [LEFT_PAREN], [IDENTIFIER], [COLON], [TYPE], [RIGHT_PAREN], [ARROW], [TYPE], [LEFT_BRACE], [PRINT], [STRING_LITERAL], [SEMI-COLON], [RETURN], [SEMI-COLON], [RIGHT_BRACE]</p><p>This about sums up the first step toward developing a full-fledged compiler for the TosLang programming language. While this doesn’t look like much for the moment, this development is crucial for what is coming up later.</p><p>Also, before I’m being reproached of being a poor developper, I am fully aware that there’s currently zero error handling done in the lexer. So if someone wanted to put a letter in the middle of a number (like this: 123b456), this would immediately result in a wrong output. However, fear not my young padawans, we will deal with error handling later down the road. This example only purpose was to demonstrate how a simple lexer could be implemented.</p><p><strong>Coming up next month</strong>: Designing an AST</p></div><div class="post-tail-wrapper text-muted"><div class="post-meta mb-3"> <i class="far fa-folder-open fa-fw mr-1"></i> <a href='/categories/toslang/'>TosLang</a></div><div class="post-tags"> <i class="fa fa-tags fa-fw mr-1"></i> <a href="/tags/compiler-development/" class="post-tag no-text-decoration" >Compiler Development</a></div><div class="post-tail-bottom d-flex justify-content-between align-items-center mt-3 pt-5 pb-2"><div class="license-wrapper"> This post is licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> by the author.</div><div class="share-wrapper"> <span class="share-label text-muted mr-1">Share</span> <span class="share-icons"> <a href="https://twitter.com/intent/tweet?text=Let's implement a language - Part 1 - The Lexer - /* Insert Code Here */&url=https://faouellet.github.io//toslang-lexer/" data-toggle="tooltip" data-placement="top" title="Twitter" target="_blank" rel="noopener" aria-label="Twitter"> <i class="fa-fw fab fa-twitter"></i> </a> <a href="https://www.facebook.com/sharer/sharer.php?title=Let's implement a language - Part 1 - The Lexer - /* Insert Code Here */&u=https://faouellet.github.io//toslang-lexer/" data-toggle="tooltip" data-placement="top" title="Facebook" target="_blank" rel="noopener" aria-label="Facebook"> <i class="fa-fw fab fa-facebook-square"></i> </a> <a href="https://telegram.me/share?text=Let's implement a language - Part 1 - The Lexer - /* Insert Code Here */&url=https://faouellet.github.io//toslang-lexer/" data-toggle="tooltip" data-placement="top" title="Telegram" target="_blank" rel="noopener" aria-label="Telegram"> <i class="fa-fw fab fa-telegram"></i> </a> <i class="fa-fw fas fa-link small" onclick="copyLink()" data-toggle="tooltip" data-placement="top" title="Copy link"></i> </span></div></div></div></div></div><div id="panel-wrapper" class="col-xl-3 pl-2 text-muted topbar-down"><div class="access"><div id="access-tags"> <span>Trending Tags</span><div class="d-flex flex-wrap mt-3 mb-1 mr-3"> <a class="post-tag" href="/tags/database/">Database</a> <a class="post-tag" href="/tags/source-control/">Source Control</a> <a class="post-tag" href="/tags/c/">C++</a> <a class="post-tag" href="/tags/build-system/">Build System</a> <a class="post-tag" href="/tags/parallelism/">Parallelism</a> <a class="post-tag" href="/tags/compiler-development/">Compiler Development</a> <a class="post-tag" href="/tags/software-development/">Software Development</a> <a class="post-tag" href="/tags/c-amp/">C++AMP</a> <a class="post-tag" href="/tags/concurrency/">Concurrency</a> <a class="post-tag" href="/tags/gpgpu/">GPGPU</a></div></div></div><div id="toc-wrapper" class="pl-0 pr-4 mb-5"> <span class="pl-3 pt-2 mb-2">Contents</span><nav id="toc" data-toggle="toc"></nav></div></div></div><div class="row"><div class="col-12 col-lg-11 col-xl-8"><div id="post-extend-wrapper" class="pl-1 pr-1 pl-sm-2 pr-sm-2 pl-md-4 pr-md-4"><div id="related-posts" class="mt-5 mb-2 mb-sm-4"><h3 class="pt-2 mt-1 mb-4 ml-1" data-toc-skip>Further Reading</h3><div class="card-deck mb-4"><div class="card"> <a href="/toslang-ast/"><div class="card-body"> <span class="timeago small" > Jun 3, 2016 <i class="unloaded">2016-06-03T00:00:00-04:00</i> </span><h3 class="pt-0 mt-1 mb-3" data-toc-skip>Let's implement a language - Part 2 - The AST</h3><div class="text-muted small"><p> Hey everyone! Last time, we opened up the black box that is a modern compiler to see that it what is fact three black boxes linked together. {% include figure.html src=”/assets/img/Simple...</p></div></div></a></div><div class="card"> <a href="/toslang-parser/"><div class="card-body"> <span class="timeago small" > Jul 1, 2016 <i class="unloaded">2016-07-01T00:00:00-04:00</i> </span><h3 class="pt-0 mt-1 mb-3" data-toc-skip>Let's implement a language - Part 3 - The Parser</h3><div class="text-muted small"><p> Hey everyone! Continuing our journey toward a fully working compiler, we will now build the parser that will allow us to produce an AST out of program we received as input. {% include figure....</p></div></div></a></div><div class="card"> <a href="/toslang-intro/"><div class="card-body"> <span class="timeago small" > Apr 1, 2016 <i class="unloaded">2016-04-01T00:00:00-04:00</i> </span><h3 class="pt-0 mt-1 mb-3" data-toc-skip>Let's implement a language - Part 0 - Intro</h3><div class="text-muted small"><p> Hey everyone! Starting this month, I’ll take you through my personal journey to develop a compiler for a language of my own design. While the next posts in this series will be quite technical, I’d...</p></div></div></a></div></div></div><div class="post-navigation d-flex justify-content-between"> <a href="/toslang-intro/" class="btn btn-outline-primary"><p>Let's implement a language - Part 0 - Intro</p></a> <a href="/toslang-ast/" class="btn btn-outline-primary"><p>Let's implement a language - Part 2 - The AST</p></a></div><div id="disqus" class="pt-2 pb-2"><p class="font-italic text-center text-muted small"> Comments powered by <a href="https://disqus.com/">Disqus</a>.</p></div><script src="/assets/js/lib/jquery.disqusloader.min.js"></script> <script> var options = { scriptUrl: '//insertcodehere.disqus.com/embed.js', disqusConfig: function() { this.page.url = 'https://faouellet.github.io//toslang-lexer/'; this.page.identifier = '/toslang-lexer/'; } }; $.disqusLoader('#disqus', options); </script></div></div></div><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lozad/dist/lozad.min.js"></script> <script type="text/javascript"> const imgs = document.querySelectorAll('#post-wrapper img'); const observer = lozad(imgs); observer.observe(); </script><footer class="d-flex w-100 justify-content-center"><div class="d-flex justify-content-between align-items-center"><div class="footer-left"><p class="mb-0"> © 2021 <a href="https://github.com/faouellet">Félix-Antoine Ouellet</a>. <span data-toggle="tooltip" data-placement="top" title="Except where otherwise noted, the blog posts on this site are licensed under the Creative Commons Attribution 4.0 International (CC BY 4.0) License by the author.">Some rights reserved.</span></p></div><div class="footer-right"><p class="mb-0"> Powered by <a href="https://jekyllrb.com" target="_blank" rel="noopener">Jekyll</a> with <a href="https://github.com/cotes2020/jekyll-theme-chirpy/" target="_blank" rel="noopener">Chirpy</a> theme.</p></div></div></footer></div><div id="search-result-wrapper" class="d-flex justify-content-center unloaded"><div class="col-12 col-xl-11 post-content"><div id="search-hints"><h4 class="text-muted mb-4">Trending Tags</h4><a class="post-tag" href="/tags/database/">Database</a> <a class="post-tag" href="/tags/source-control/">Source Control</a> <a class="post-tag" href="/tags/c/">C++</a> <a class="post-tag" href="/tags/build-system/">Build System</a> <a class="post-tag" href="/tags/parallelism/">Parallelism</a> <a class="post-tag" href="/tags/compiler-development/">Compiler Development</a> <a class="post-tag" href="/tags/software-development/">Software Development</a> <a class="post-tag" href="/tags/c-amp/">C++AMP</a> <a class="post-tag" href="/tags/concurrency/">Concurrency</a> <a class="post-tag" href="/tags/gpgpu/">GPGPU</a></div><div id="search-results" class="d-flex flex-wrap justify-content-center text-muted mt-3"></div></div></div></div><div id="mask"></div><a id="back-to-top" href="#" aria-label="back-to-top" class="btn btn-lg btn-box-shadow" role="button"> <i class="fas fa-angle-up"></i> </a> <script src="https://cdn.jsdelivr.net/npm/simple-jekyll-search@1.7.3/dest/simple-jekyll-search.min.js"></script> <script> SimpleJekyllSearch({ searchInput: document.getElementById('search-input'), resultsContainer: document.getElementById('search-results'), json: '/assets/js/data/search.json', searchResultTemplate: '<div class="pl-1 pr-1 pl-sm-2 pr-sm-2 pl-lg-4 pr-lg-4 pl-xl-0 pr-xl-0"> <a href="https://faouellet.github.io/{url}">{title}</a><div class="post-meta d-flex flex-column flex-sm-row text-muted mt-1 mb-1"><div class="mr-sm-4"><i class="far fa-folder fa-fw"></i>{categories}</div><div><i class="fa fa-tag fa-fw"></i>{tags}</div></div><p>{snippet}</p></div>', noResultsText: '<p class="mt-5">Oops! No result founds.</p>' }); </script>

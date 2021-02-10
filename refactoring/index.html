@@ -1,0 +1,1213 @@
+<!DOCTYPE html><html lang="en" mode="dark" ><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><meta name="theme" content="Chirpy v2.7.1"><meta name="generator" content="Jekyll v4.1.1" /><meta property="og:title" content="Refactoring 101" /><meta name="author" content="Félix-Antoine Ouellet" /><meta property="og:locale" content="en_US" /><meta name="description" content="Teaching pain to a new generation" /><meta property="og:description" content="Teaching pain to a new generation" /><link rel="canonical" href="https://faouellet.github.io//refactoring/" /><meta property="og:url" content="https://faouellet.github.io//refactoring/" /><meta property="og:site_name" content="/* Insert Code Here */" /><meta property="og:type" content="article" /><meta property="article:published_time" content="2020-09-07T00:00:00-04:00" /><meta name="twitter:card" content="summary" /><meta property="twitter:title" content="Refactoring 101" /> <script type="application/ld+json"> {"description":"Teaching pain to a new generation","url":"https://faouellet.github.io//refactoring/","headline":"Refactoring 101","dateModified":"2020-09-07T00:00:00-04:00","@type":"BlogPosting","datePublished":"2020-09-07T00:00:00-04:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://faouellet.github.io//refactoring/"},"author":{"@type":"Person","name":"Félix-Antoine Ouellet"},"@context":"https://schema.org"}</script><title>Refactoring 101 | /* Insert Code Here */</title><link rel="shortcut icon" href="/assets/img/favicons/favicon.ico" type="image/x-icon"><link rel="icon" href="/assets/img/favicons/favicon.ico" type="image/x-icon"><link rel="apple-touch-icon" href="/assets/img/favicons/apple-icon.png"><link rel="apple-touch-icon" href="/assets/img/favicons/apple-icon-precomposed.png"><link rel="apple-touch-icon" sizes="57x57" href="/assets/img/favicons/apple-icon-57x57.png"><link rel="apple-touch-icon" sizes="60x60" href="/assets/img/favicons/apple-icon-60x60.png"><link rel="apple-touch-icon" sizes="72x72" href="/assets/img/favicons/apple-icon-72x72.png"><link rel="apple-touch-icon" sizes="76x76" href="/assets/img/favicons/apple-icon-76x76.png"><link rel="apple-touch-icon" sizes="114x114" href="/assets/img/favicons/apple-icon-114x114.png"><link rel="apple-touch-icon" sizes="120x120" href="/assets/img/favicons/apple-icon-120x120.png"><link rel="apple-touch-icon" sizes="144x144" href="/assets/img/favicons/apple-icon-144x144.png"><link rel="apple-touch-icon" sizes="152x152" href="/assets/img/favicons/apple-icon-152x152.png"><link rel="apple-touch-icon" sizes="180x180" href="/assets/img/favicons/apple-icon-180x180.png"><link rel="icon" type="image/png" sizes="192x192" href="/assets/img/favicons/android-icon-192x192.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicons/favicon-32x32.png"><link rel="icon" type="image/png" sizes="96x96" href="/assets/img/favicons/favicon-96x96.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicons/favicon-16x16.png"><link rel="manifest" href="/assets/img/favicons/manifest.json"><meta name='msapplication-config' content='/assets/img/favicons/browserconfig.xml'><meta name="msapplication-TileColor" content="#ffffff"><meta name="msapplication-TileImage" content="/assets/img/favicons/ms-icon-144x144.png"><meta name="theme-color" content="#ffffff"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://fonts.gstatic.com"><link rel="preconnect" href="https://www.google-analytics.com" crossorigin="use-credentials"><link rel="dns-prefetch" href="https://www.google-analytics.com"><link rel="preconnect" href="https://www.googletagmanager.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><link rel="preconnect" href="cdn.jsdelivr.net"><link rel="dns-prefetch" href="cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha256-LA89z+k9fjgMKQ/kq4OO2Mrf8VltYml/VES+Rg0fh20=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.11.2/css/all.min.css" integrity="sha256-+N4/V/SbAFiW1MPBCXnfnP9QSN3+Keu+NlB+0ev/YKQ=" crossorigin="anonymous"><link rel="preload" href="/assets/css/post.css" as="style"><link rel="stylesheet" href="/assets/css/post.css"><link rel="preload" as="style" href="/assets/css/lib/bootstrap-toc.min.css"><link rel="stylesheet" href="/assets/css/lib/bootstrap-toc.min.css" /> <script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script> <script defer src="https://cdn.jsdelivr.net/combine/npm/popper.js@1.15.0,npm/bootstrap@4/dist/js/bootstrap.min.js"></script> <script async src="/assets/js/post.min.js"></script> <script defer src="/app.js"></script> <script defer src="https://www.googletagmanager.com/gtag/js?id=UA-71911238-1"></script> <script> document.addEventListener("DOMContentLoaded", function(event) { window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'UA-71911238-1'); }); </script><body data-spy="scroll" data-target="#toc"><div id="sidebar" class="d-flex flex-column align-items-end"><div class="profile-wrapper text-center"><div id="avatar"> <a href="/" alt="avatar" class="mx-auto"> <img src="/assets/img/avatar.jpg" alt="avatar" onerror="this.style.display='none'"> </a></div><div class="site-title mt-3"> <a href="/">/* Insert Code Here */</a></div><div class="site-subtitle font-italic"></div></div><ul class="w-100"><li class="nav-item"> <a href="/" class="nav-link"> <i class="fa-fw fas fa-home ml-xl-3 mr-xl-3 unloaded"></i> <span>HOME</span> </a><li class="nav-item"> <a href="/tabs/categories/" class="nav-link"> <i class="fa-fw fas fa-stream ml-xl-3 mr-xl-3 unloaded"></i> <span>CATEGORIES</span> </a><li class="nav-item"> <a href="/tabs/tags/" class="nav-link"> <i class="fa-fw fas fa-tags ml-xl-3 mr-xl-3 unloaded"></i> <span>TAGS</span> </a><li class="nav-item"> <a href="/tabs/archives/" class="nav-link"> <i class="fa-fw fas fa-archive ml-xl-3 mr-xl-3 unloaded"></i> <span>ARCHIVES</span> </a><li class="nav-item"> <a href="/tabs/about/" class="nav-link"> <i class="fa-fw fas fa-info ml-xl-3 mr-xl-3 unloaded"></i> <span>ABOUT</span> </a></ul><div class="sidebar-bottom mt-auto d-flex flex-wrap justify-content-center"> <a href="https://github.com/faouellet" aria-label="github" target="_blank" rel="noopener"> <i class="fab fa-github-alt"></i> </a> <a href="https://www.linkedin.com/in/felixantoineouellet/" aria-label="linkedin" target="_blank" rel="noopener"> <i class="fab fa-linkedin"></i> </a> <a href=" javascript:location.href = 'mailto:' + ['faouellet','gmail.com'].join('@')" aria-label="email" > <i class="fas fa-envelope"></i> </a> <a href="/feed.xml" aria-label="rss" > <i class="fas fa-rss"></i> </a></div></div><div id="topbar-wrapper" class="row justify-content-center topbar-down"><div id="topbar" class="col-11 d-flex h-100 align-items-center justify-content-between"> <span id="breadcrumb"> <span> <a href="/"> Posts </a> </span> <span>Refactoring 101</span> </span> <i id="sidebar-trigger" class="fas fa-bars fa-fw"></i><div id="topbar-title"> Post</div><i id="search-trigger" class="fas fa-search fa-fw"></i> <span id="search-wrapper" class="align-items-center"> <i class="fas fa-search fa-fw"></i> <input class="form-control" id="search-input" type="search" aria-label="search" placeholder="Search..."> <i class="fa fa-times-circle fa-fw" id="search-cleaner"></i> </span> <span id="search-cancel" >Cancel</span></div></div><div id="main-wrapper"><div id="main"><div class="row"><div id="post-wrapper" class="col-12 col-lg-11 col-xl-8"><div class="post pl-1 pr-1 pl-sm-2 pr-sm-2 pl-md-4 pr-md-4"><h1 data-toc-skip>Refactoring 101</h1><div class="post-meta text-muted d-flex flex-column"><div> <span class="timeago " data-toggle="tooltip" data-placement="bottom" title="Mon, Sep 7, 2020, 12:00 AM -0400" > Sep 7, 2020 <i class="unloaded">2020-09-07T00:00:00-04:00</i> </span> by <span class="author"> Félix-Antoine Ouellet </span></div><div> <span class="readtime" data-toggle="tooltip" data-placement="bottom" title="7139 words">39 min</span></div></div><div class="post-content"><hr /><p>All the code for this article can be found <a href="https://github.com/faouellet/Refactoring">here</a>.</p><hr /><h2 id="foreword">Foreword</h2><p>This article is adapted from materials that I gave to students of <a href="https://www.usherbrooke.ca/admission/fiches-cours/IGL601/">a course that I helped rebuild from the ground up</a>. The intent is to demonstrate the whys and hows of refactoring while going through a (as close as possible) real-world example. While the article is primarily aimed at students and junior developpers, there’s no reason why older folks might not appreciate it. Enjoy!</p><h2 id="motivation">Motivation</h2><p>One does not simply refactor existing code for the fun of it. Demonstrating your “<em>1337 hack0rz skillz</em>” is also far from a good reason when trying to convince your colleagues to go ahead with a refactoring. And let’s not even begin to talk about cries of “this piece of code isn’t following my favorite programming convention” or “we should definitely use (insert framework <em>à la mode</em>)”.</p><p>The fact of the matter is that time is valuable. You only have N working hours each day and you and your employer have to be smart on how to spend them (or not if your employer has a culture of crunch time). Therefore you have to be <strong>1)</strong> convinced and <strong>2)</strong> convincing that a given refactoring is a valuable investment. Why spend time on some already existing and functionning code instead of writing new code? Well, here’s a few reasons you could give to your boss:</p><ul><li><strong>Not meeting the requirements anymore</strong>: Times change, market opportunities change, requirements change and, logically, code will have to change to keep up. In the best of worlds, your codebase would be engineered in such a way that it could handle new requirements without much effort. You’d only need to extent some existing part of your codebase and, voila, a new cash cow feature! Unfortunately, most of us don’t live in such a world. If, despite your best efforts, your codebase still refuses to accomodate evolving requirements, then a refactoring could be in order.<li><strong>Lack of robustness</strong>: If a particular component of your application keeps topping the charts of most buggy functionnalities as voted by your customers months after months, it might by time to look at it with a more critical eye. Troubles with your error handling or how you write data on disk can spell doom for your software. Remember, defensive programming is your friend!<li><strong>Lack of maintainability</strong>: Closely related to the two previous points, if almost nobody on the development team can extend a particular piece of code or fix a bug without introducing at least two new ones, then a refactor is certainly worth considering.<li><strong>Long iteration cycles</strong>: Here, iteration cycle means the time it takes to go through a “code-compile-test” cycle. Ideally, you’d want this cycle to be as short as possible so as not to let a developper’s productivity go down the drain. To do so, you have to fight back against accumulating unnecessary complexities and dependencies in your codebase.</ul><figure><p style="text-align:center;"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="/assets/img/compiling.png" alt="Image: Obligatory XKCD reference" /></p><figcaption><span><center><i>Obligatory XKCD reference</i></center></span></figcaption></figure><ul><li><strong>Sub-par performance</strong>: From experience, I can tell you that when your software doesn’t meets its performance expectations (either what you advertised or what your client expects), you will hear about it. <strong>LOUDLY!</strong> On the one hand, If you’re fortunate, fixing a performance problem can be as simple as using a more suitable data structure for a particular operation. On the other end, you might need to strongly reconsider a large part of your codebase.</ul><p>This is by no means an exhaustive list but it can get the ball rolling if you’re in the process of building a case for your particular circumstances.</p><h2 id="preparations">Preparations</h2><figure><p style="text-align:center;"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="/assets/img/preparations.jpg" alt="Image: " /></p><figcaption><span><center><i></i></center></span></figcaption></figure><p>Let’s say you’ve convinced everyone that a refactoring is the only way forward. Do you then jump in head first? Answer: a resounding <strong>no</strong>! First you must make sure that you’re as prepared as you can be before touching a single line of code. While there’s no one size fits all preparation that will guarantee success every time (as most things in life there’s no silver bullet to be found here), a good preparation will be able to answer the following questions:</p><ul><li>Is the feature you’re about to rewrite sufficiently tested? If not, you might be committing to the programmatic equivalent of a bungee jump without a bungee cord. Good luck going all the way without breaking anything!<li>Do you have a clear idea of the size of the changes you’re about to make? If not, you might already be in over your head without realizing it.<li>Did you validate the functionnal impacts of the incoming refactoring? If not, your clients might be in for an unwelcome surprise!<li>Did you plan out the most optimal way to go about the refactoring? If not, you’re probably creating more work for yourself down the line.</ul><h2 id="case-study">Case Study</h2><p>One of my goals when teaching students is to make them shed their fears of legacy code. To this end, I usually throw them deep into old and unmaintained codebase that shows its age and lack of love. It’s a shock for most of them, but, then again, it’s not so different than might what happen at their first day at a new job (be it an internship or their first real job).</p><p>In this instance, we’ll look at a favorite of mine: the source code of the, aptly named, <a href="https://en.wikipedia.org/wiki/Abuse_(video_game)">Abuse</a> video game. Some highlights:</p><ul><li>It was written in the mid-90s<li>It is unmaintained since<li>It contains a mix of C and (pre-standard) C++<li>It has almost no error handling<li>Its dependency network is… a sight to behold<li>It has dubious memory management<li>A modern compiler spews out a ton of warning when compiling it (even on lower warning levels)<li>It contains an implementation of a Lisp interpreter used to run game scripts (not a con, I just find it so interesting that I have to mention it)</ul><p>Of course, complety refactoring it to fix its many problems would be an exercise in madness. Especially in the scope of an university course. However, having a go at some well chosen components of Abuse is an interesting experience that can teach students how to plan and execute a refactoring. It also goes without saying that it’ll also teach them some grit!</p><p>Narrowing it down for the scope of a single article, we’ll look at how we can improve <code class="language-plaintext highlighter-rouge">Abuse/src/lol/matrix.h</code> and <code class="language-plaintext highlighter-rouge">Abuse/src/lol/matrix.cpp</code>.</p><h3 id="dead-code">Dead code</h3><details> <summary><b>Changes</b></summary><div><div class="language-diff highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+</pre><td class="rouge-code"><pre><span class="gd">--- original/matrix.h
+</span><span class="gi">+++ diffs/1-Dead Code/matrix.h
+</span><span class="p">@@ -54,14 +54,6 @@</span>
+     return *this = (*this)op val;                                              \
+   }
+
+-#define CAST_OP(elems, dest)                                                   \
+<span class="gd">-  inline operator Vec##dest&lt;T&gt;() const {                                       \
+-    Vec##dest&lt;T&gt; ret;                                                          \
+-    for (int n = 0; n &lt; elems &amp;&amp; n &lt; dest; n++)                                \
+-      ret[n] = (*this)[n];                                                     \
+-    return ret;                                                                \
+-  }
+-
+</span> #define OPERATORS(elems)                                                       \
+   inline T &amp;operator[](int n) { return *(&amp;x + n); }                            \
+   inline T const &amp;operator[](int n) const { return *(&amp;x + n); }                \
+<span class="p">@@ -83,17 +75,6 @@</span>
+   SCALAR_OP(elems, *)                                                          \
+   SCALAR_OP(elems, /)                                                          \
+                                                                                \
+<span class="gd">-  CAST_OP(elems, 2)                                                            \
+-  CAST_OP(elems, 3)                                                            \
+-  CAST_OP(elems, 4)                                                            \
+-                                                                               \
+-  template &lt;typename U&gt; inline operator Vec##elems&lt;U&gt;() const {                \
+-    Vec##elems&lt;U&gt; ret;                                                         \
+-    for (int n = 0; n &lt; elems; n++)                                            \
+-      ret[n] = static_cast&lt;U&gt;((*this)[n]);                                     \
+-    return ret;                                                                \
+-  }                                                                            \
+-                                                                               \
+</span>   inline T sqlen() const {                                                     \
+     T acc = 0;                                                                 \
+     for (int n = 0; n &lt; elems; n++)                                            \
+<span class="p">@@ -106,10 +87,6 @@</span>
+     return sqrtf((float)sqlen());                                              \
+   }
+
+-template &lt;typename T&gt; struct Vec2;
+<span class="gd">-template &lt;typename T&gt; struct Vec3;
+-template &lt;typename T&gt; struct Vec4;
+-
+</span> template &lt;typename T&gt; struct Vec2 {
+   inline Vec2() {}
+   inline Vec2(T val) { x = y = val; }
+<span class="p">@@ -120,89 +97,13 @@</span>
+
+   OPERATORS(2)
+
+-  union {
+<span class="gd">-    T x;
+-    T a;
+-    T i;
+-  };
+-  union {
+-    T y;
+-    T b;
+-    T j;
+-  };
+</span><span class="gi">+  T x;
++  T y;
+</span> };
+
+ typedef Vec2&lt;float&gt; vec2;
+ typedef Vec2&lt;int&gt; vec2i;
+
+-template &lt;typename T&gt; struct Vec3 {
+<span class="gd">-  inline Vec3() {}
+-  inline Vec3(T val) { x = y = z = val; }
+-  inline Vec3(T _x, T _y, T _z) {
+-    x = _x;
+-    y = _y;
+-    z = _z;
+-  }
+-
+-  OPERATORS(3)
+-
+-  union {
+-    T x;
+-    T a;
+-    T i;
+-  };
+-  union {
+-    T y;
+-    T b;
+-    T j;
+-  };
+-  union {
+-    T z;
+-    T c;
+-    T k;
+-  };
+-};
+-
+-typedef Vec3&lt;float&gt; vec3;
+-typedef Vec3&lt;int&gt; vec3i;
+-
+-template &lt;typename T&gt; struct Vec4 {
+-  inline Vec4() {}
+-  inline Vec4(T val) { x = y = z = w = val; }
+-  inline Vec4(T _x, T _y, T _z, T _w) {
+-    x = _x;
+-    y = _y;
+-    z = _z;
+-    w = _w;
+-  }
+-
+-  OPERATORS(4)
+-
+-  union {
+-    T x;
+-    T a;
+-    T i;
+-  };
+-  union {
+-    T y;
+-    T b;
+-    T j;
+-  };
+-  union {
+-    T z;
+-    T c;
+-    T k;
+-  };
+-  union {
+-    T w;
+-    T d;
+-    T l;
+-  };
+-};
+-
+-typedef Vec4&lt;float&gt; vec4;
+-typedef Vec4&lt;int&gt; vec4i;
+-
+</span> #define SCALAR_GLOBAL(elems, op, U)                                            \
+   template &lt;typename T&gt;                                                        \
+   static inline Vec##elems&lt;U&gt; operator op(U const &amp;val,                        \
+<span class="p">@@ -224,87 +125,6 @@</span>
+   SCALAR_GLOBAL2(elems, /)
+
+ GLOBALS(2)
+<span class="gd">-GLOBALS(3)
+-GLOBALS(4)
+-
+-template &lt;typename T&gt; struct Mat4 {
+-  inline Mat4() {}
+-  inline Mat4(T val) {
+-    for (int j = 0; j &lt; 4; j++)
+-      for (int i = 0; i &lt; 4; i++)
+-        v[i][j] = (i == j) ? val : 0;
+-  }
+-  inline Mat4(Vec4&lt;T&gt; v0, Vec4&lt;T&gt; v1, Vec4&lt;T&gt; v2, Vec4&lt;T&gt; v3) {
+-    v[0] = v0;
+-    v[1] = v1;
+-    v[2] = v2;
+-    v[3] = v3;
+-  }
+-
+-  inline Vec4&lt;T&gt; &amp;operator[](int n) { return v[n]; }
+-  inline Vec4&lt;T&gt; const &amp;operator[](int n) const { return v[n]; }
+-
+-  T det() const;
+-  Mat4&lt;T&gt; invert() const;
+-
+-  static Mat4&lt;T&gt; ortho(T left, T right, T bottom, T top, T near, T far);
+-  static Mat4&lt;T&gt; frustum(T left, T right, T bottom, T top, T near, T far);
+-  static Mat4&lt;T&gt; perspective(T theta, T width, T height, T near, T far);
+-  static Mat4&lt;T&gt; translate(T x, T y, T z);
+-  static Mat4&lt;T&gt; rotate(T theta, T x, T y, T z);
+-
+-  void printf() const;
+-
+-  inline Mat4&lt;T&gt; operator+(Mat4&lt;T&gt; const val) const {
+-    Mat4&lt;T&gt; ret;
+-    for (int j = 0; j &lt; 4; j++)
+-      for (int i = 0; i &lt; 4; i++)
+-        ret[i][j] = v[i][j] + val[i][j];
+-    return ret;
+-  }
+-
+-  inline Mat4&lt;T&gt; operator+=(Mat4&lt;T&gt; const val) { return *this = *this + val; }
+-
+-  inline Mat4&lt;T&gt; operator-(Mat4&lt;T&gt; const val) const {
+-    Mat4&lt;T&gt; ret;
+-    for (int j = 0; j &lt; 4; j++)
+-      for (int i = 0; i &lt; 4; i++)
+-        ret[i][j] = v[i][j] - val[i][j];
+-    return ret;
+-  }
+-
+-  inline Mat4&lt;T&gt; operator-=(Mat4&lt;T&gt; const val) { return *this = *this - val; }
+-
+-  inline Mat4&lt;T&gt; operator*(Mat4&lt;T&gt; const val) const {
+-    Mat4&lt;T&gt; ret;
+-    for (int j = 0; j &lt; 4; j++)
+-      for (int i = 0; i &lt; 4; i++) {
+-        T tmp = 0;
+-        for (int k = 0; k &lt; 4; k++)
+-          tmp += v[k][j] * val[i][k];
+-        ret[i][j] = tmp;
+-      }
+-    return ret;
+-  }
+-
+-  inline Mat4&lt;T&gt; operator*=(Mat4&lt;T&gt; const val) { return *this = *this * val; }
+-
+-  inline Vec4&lt;T&gt; operator*(Vec4&lt;T&gt; const val) const {
+-    Vec4&lt;T&gt; ret;
+-    for (int j = 0; j &lt; 4; j++) {
+-      T tmp = 0;
+-      for (int i = 0; i &lt; 4; i++)
+-        tmp += v[i][j] * val[i];
+-      ret[j] = tmp;
+-    }
+-    return ret;
+-  }
+-
+-  Vec4&lt;T&gt; v[4];
+-};
+-
+-typedef Mat4&lt;float&gt; mat4;
+-typedef Mat4&lt;int&gt; mat4i;
+</span>
+ } /* namespace lol */
+</pre></table></code></div></div></div></details><p>Good news everyone! Looking at the contents of <code class="language-plaintext highlighter-rouge">matrix.h</code>, we can clearly see that the <code class="language-plaintext highlighter-rouge">Vec3</code>, <code class="language-plaintext highlighter-rouge">Vec4</code> and <code class="language-plaintext highlighter-rouge">Mat4</code> classes are all dead. Nobody uses them anymore. This means that we can swiftly bury them which will greatly reduce our workload! For example, <code class="language-plaintext highlighter-rouge">matrix.cpp</code> just disappears because it only contained definition of the dead <code class="language-plaintext highlighter-rouge">Mat4</code> class. Also, while the <code class="language-plaintext highlighter-rouge">Vec2</code> class is still used by large swaths of the application, only its members <code class="language-plaintext highlighter-rouge">x</code> and <code class="language-plaintext highlighter-rouge">y</code> are accessed. All other members can therefore be put to the guillotine. Furthermore, there’s no instance in <em>Abuse</em>’s code of casting a <code class="language-plaintext highlighter-rouge">Vec2</code> of some type to a <code class="language-plaintext highlighter-rouge">Vec2</code> of some other type. This means that we can also rid ourselves of <code class="language-plaintext highlighter-rouge">CAST_OP</code>. As a colleague of mine once said to me: “A deleted line of code is easier to maintain than an added one”.</p><p><em>Do note that we can be this expeditive only because we’re working in an unmaintained codebase. In the Real World™, please do make sure that the owner of what you consider dead code is aware of your intentions. Sometimes a piece of code may only appear dead because the functionnality it implements is impossible to test automatically with the tools currently available to the development team. In such instances, a code coverage tool might “falsely” indicate that the code is dead because it can only be tested manually.</em></p><figure><p style="text-align:center;"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="/assets/img/lovecraft.png" alt="Image: Beware!" /></p><figcaption><span><center><i>Beware!</i></center></span></figcaption></figure><h3 id="files-organization">Files organization</h3><details> <summary><b>Changes</b></summary><div><div class="language-diff highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+</pre><td class="rouge-code"><pre><span class="gd">--- diffs/1-Dead Code/matrix.h
+</span><span class="gi">+++ diffs/2-Files Organization/vec2.h
+</span><span class="p">@@ -18,6 +18,8 @@</span>
+
+ #include &lt;cmath&gt;
+
++#include "vec2fwd.h"
+<span class="gi">+
+</span> namespace lol {
+
+ #define VECTOR_OP(elems, op)                                                   \
+<span class="p">@@ -101,9 +103,6 @@</span>
+   T y;
+ };
+
+-typedef Vec2&lt;float&gt; vec2;
+<span class="gd">-typedef Vec2&lt;int&gt; vec2i;
+-
+</span> #define SCALAR_GLOBAL(elems, op, U)                                            \
+   template &lt;typename T&gt;                                                        \
+   static inline Vec##elems&lt;U&gt; operator op(U const &amp;val,                        \
+</pre></table></code></div></div><div class="language-cpp highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+</pre><td class="rouge-code"><pre><span class="c1">// File: vec2fwd.h</span>
+
+<span class="cp">#ifndef __LOL_VEC2FWD_H__
+#define __LOL_VEC2FWD_H__
+</span>
+<span class="k">namespace</span> <span class="n">lol</span>
+<span class="p">{</span>
+
+<span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="k">class</span> <span class="nc">Vec2</span><span class="p">;</span>
+
+<span class="k">using</span> <span class="n">vec2</span> <span class="o">=</span> <span class="n">Vec2</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="k">using</span> <span class="n">vec2i</span> <span class="o">=</span> <span class="n">Vec2</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">;</span>
+
+<span class="p">}</span> <span class="cm">/* namespace lol */</span>
+
+<span class="cp">#endif // __LOL_VEC2FWD_H__
+</span></pre></table></code></div></div></div></details><p>Now that <code class="language-plaintext highlighter-rouge">Vec2</code> is all that’s left in <code class="language-plaintext highlighter-rouge">matrix.h</code>, we can rename this file to <code class="language-plaintext highlighter-rouge">vec2.h</code> to reflect more accuratly its contents.</p><p>The other modification that we’ll perform at this stage is adding a <code class="language-plaintext highlighter-rouge">vec2fwd.h</code> file. As can be seen above, this file will contain a forward declaration and two aliases for <code class="language-plaintext highlighter-rouge">Vec2</code>. Why such a change? Well, the thing to know about C++ headers is that they are nothing more that glorified copy-paste. If you ask your favorite compiler to show you what it sees when it compiles a given file, you’ll be presented with a humongous amalgamation of the file and every file it includes (and every file they include and so on and so forth). In a single word: headers are <strong>transitive</strong>. It thus follows that if a file included by another changes, you will need to recompile both. With a deep enough inclusion network, this will make you suffer when compiling a foundational file included by many others (which is the case of <code class="language-plaintext highlighter-rouge">vec2.h</code>).</p><p>To circumvent this nightmarish scenario, we can exploit the fact that a compiler only needs to know a type’s definition when it needs to know its size. In concrete terms, it only needs to truly know a type when it is used as a member variable in another type or as a base type for a derived type. In every other cases, the compiler can be satisfied by only knowing that the type’s symbol exists. This particular piece of information can be made available to the compiler by forward declaring a type. <code class="language-plaintext highlighter-rouge">vec2fwd.h</code> is thus expected to be favored over <code class="language-plaintext highlighter-rouge">vec2.h</code> when possible. In an ideal world, only <code class="language-plaintext highlighter-rouge">.cpp</code> files would include <code class="language-plaintext highlighter-rouge">vec2.h</code>. Since we don’t typically include <code class="language-plaintext highlighter-rouge">.cpp</code> in other files, this would keep recompilations to a minimum.</p><p>The same idea applies to the <code class="language-plaintext highlighter-rouge">vec2</code> and <code class="language-plaintext highlighter-rouge">vec2i</code> aliases. We want to have them exposed in a file without a lot of moving parts.</p><h3 id="class">Class</h3><p>With all the cruft that had accumulated in these files removed, we can focus our attention on the <code class="language-plaintext highlighter-rouge">Vec2</code> struct itself.</p><h4 id="data-and-data-access">Data and data access</h4><details> <summary><b>Changes</b></summary><div><div class="language-diff highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+</pre><td class="rouge-code"><pre><span class="gd">--- diffs/2-Files Organization/vec2.h
+</span><span class="gi">+++ diffs/3-Class contents/vec2.h
+</span><span class="p">@@ -16,7 +16,10 @@</span>
+ #if !defined __LOL_MATRIX_H__
+ #define __LOL_MATRIX_H__
+
++#include &lt;array&gt;
+ #include &lt;cmath&gt;
+<span class="gi">+#include &lt;numeric&gt;
++#include &lt;type_traits&gt;
+</span>
+ #include "vec2fwd.h"
+
+@@ -75,34 +78,52 @@
+   SCALAR_OP(elems, -)                                                          \
+   SCALAR_OP(elems, +)                                                          \
+   SCALAR_OP(elems, *)                                                          \
+   SCALAR_OP(elems, /)                                                          \
+                                                                                \
+<span class="gd">-  inline T sqlen() const {                                                     \
+-    T acc = 0;                                                                 \
+-    for (int n = 0; n &lt; elems; n++)                                            \
+-      acc += (*this)[n] * (*this)[n];                                          \
+-    return acc;                                                                \
+-  }                                                                            \
+-                                                                               \
+-  inline float len() const {                                                   \
+-    using namespace std;                                                       \
+-    return sqrtf((float)sqlen());                                              \
+-  }
+</span>
+-template &lt;typename T&gt; struct Vec2 {
+<span class="gi">+template &lt;typename TVec&gt; class Vec2 {
++    static_assert(std::is_same_v&lt;TVec, int&gt; || std::is_same_v&lt;TVec, float&gt;);
++
++    using TData = std::array&lt;TVec, 2&gt;;
++
++public:
+</span>   inline Vec2() {}
+<span class="gd">-  inline Vec2(T val) { x = y = val; }
+-  inline Vec2(T _x, T _y) {
+</span><span class="gi">+  inline Vec2(TVec val) { x = y = val; }
++  inline Vec2(TVec _x, TVec _y) {
+</span>     x = _x;
+     y = _y;
+   }
+
++    // Accessors
+<span class="gi">+    constexpr TVec X() const { return m_data[0]; }
++    constexpr TVec Y() const { return m_data[1]; }
++
++    constexpr TVec&amp; X() { return m_data[0]; }
++    constexpr TVec&amp; Y() { return m_data[1]; }
++
++    // Iterators
++    constexpr typename TData::iterator begin() noexcept              { return m_data.begin(); }
++    constexpr typename TData::iterator end() noexcept                { return m_data.end(); }
++    constexpr typename TData::const_iterator cbegin() const noexcept { return m_data.cbegin(); }
++    constexpr typename TData::const_iterator cend() const noexcept   { return m_data.cend(); }
++
++    // Length
++    TVec sqlen() const
++    {
++        return std::accumulate(m_data.cbegin(), m_data.cend(), TVec{});
++    }
++
++    float len() const
++    {
++        return std::sqrt(static_cast&lt;float&gt;(sqlen()));
++    }
++
+</span>   OPERATORS(2)
+
+-  T x;
+<span class="gd">-  T y;
+</span><span class="gi">+private:
++    TData m_data{};
+</span> };
+
++
+ #define SCALAR_GLOBAL(elems, op, U)                                            \
+   template &lt;typename T&gt;                                                        \
+   static inline Vec##elems&lt;U&gt; operator op(U const &amp;val,                        \
+</pre></table></code></div></div></div></details><p>The first problem that we have to fix is the data access API of <code class="language-plaintext highlighter-rouge">Vec2</code>. The fact of the matter is that <code class="language-plaintext highlighter-rouge">Vec2</code>, in its current form, is an exhibitionist and should be arrested for indecent exposure. To fix this problem, we can simply transform it into a class and hide its members inside it. Speaking of which, we’ll transform the two data members into a single one; an <code class="language-plaintext highlighter-rouge">std::array</code> of two elements. This then enables us to leverage some nice features of the underlying container such as its iterators. This, in turn, will allow us to use <code class="language-plaintext highlighter-rouge">Vec2</code> in many generic algorithms working with iterators (such as the ones in the C++ standard library). As proof, you have to look no further than the revamped <code class="language-plaintext highlighter-rouge">sqlen</code> method which now leverages <code class="language-plaintext highlighter-rouge">std::accumulate</code> to do its work.</p><p>A side benefit of reimplementing <code class="language-plaintext highlighter-rouge">sqlen</code> and <code class="language-plaintext highlighter-rouge">len</code> in terms of standard functions is that it allows us rid ourselves of pesky C-style casts. Even though they aren’t that problematic in this particular instance, C-style cast should be used sparingly in C++ code. The reason why is that a C-style cast will try to succeed by any means necessary (read by trying unholy combinations of all the C++ cast operators). These casts can therefore punch a hole in C++’s type system. This is something we’d rather avoid since the type system in a statically typed language can be a tool to find potential bug. Don’t break your tools!</p><p>Modifying the data members, if only to hide them away, necessarily has an impact on the data access API of <code class="language-plaintext highlighter-rouge">Vec2</code>. Again, in an ideal world, we would not give out access to mutable references to our data. Dedicated setters would be made available instead. However, to minimize the impacts of our refactoring, we will accept this hole in our design for now. Pragmatism must prevail if we want to make it to the other side of this refactoring.</p><p>Keen-eyed readers will have taken notice of the <code class="language-plaintext highlighter-rouge">static_assert</code> that appeared at the start of <code class="language-plaintext highlighter-rouge">Vec2</code>’s definition. The fact is that <code class="language-plaintext highlighter-rouge">Vec2</code> can’t contain values of arbitrary types. For example, to allow for arithmetic operations with two <code class="language-plaintext highlighter-rouge">Vec2</code>s, the values contained in them must be from types supporting such operations. In C++20, we can encode such requirements on types using <a href="https://en.cppreference.com/w/cpp/language/constraints">concepts</a>. Since we’re restraining ourselves to C++17, we unfortunately can’t take advantages of them. In this situation, I make the pragmatic choice to limit the accepted types to <code class="language-plaintext highlighter-rouge">int</code> and <code class="language-plaintext highlighter-rouge">float</code>; the two types which we have aliases for. This should be good enough until someone wants to extend the codebase far beyond its current capabilities.</p><p>Lastly, I want to touch on the qualifiers (<code class="language-plaintext highlighter-rouge">constexpr</code> and <code class="language-plaintext highlighter-rouge">noexcept</code>) that decorate some of the new class methods. What they mean is of little importance in this context. You can read up on them on the internet. What is important is that these qualifiers were originally present on methods of <code class="language-plaintext highlighter-rouge">std::array</code> as a contract that they have to honor. In turn, we have to reflect on the possibility of <code class="language-plaintext highlighter-rouge">Vec2</code> providing the same guarantees as its underlying container. In theses cases, there are no reason why it couldn’t so we propagate the qualifiers to <code class="language-plaintext highlighter-rouge">Vec2</code>’s interface. This is an important question that you should ask yourselves when designing a class: how can I leverage the undelying data structures’ guarantees in my new class? Remember, code, as science, is built upon the works of others.</p><h4 id="constructors">Constructors</h4><details> <summary><b>Changes</b></summary><div><div class="language-diff highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+</pre><td class="rouge-code"><pre><span class="gd">--- diffs/3-Class contents/vec2.h
+</span><span class="gi">+++ diffs/4-Constructors/vec2.h
+</span><span class="p">@@ -86,12 +86,9 @@</span>
+     using TData = std::array&lt;TVec, 2&gt;;
+
+ public:
+<span class="gd">-  inline Vec2() {}
+-  inline Vec2(TVec val) { x = y = val; }
+-  inline Vec2(TVec _x, TVec _y) {
+-    x = _x;
+-    y = _y;
+-  }
+</span><span class="gi">+    // Ctor
++    explicit Vec2(TVec val = TVec{}) : m_data{val, val} { }
++    Vec2(TVec _x, TVec _y) : m_data{_x, _y} { }
+</span>
+     // Accessors
+     constexpr TVec X() const { return m_data[0]; }
+</pre></table></code></div></div></div></details><p>Attentive readers might have noticed that the changes made in the previous section will cause some compilation errors. Don’t worry this will be fixed in the current section.</p><p>First of, we’ll eliminate the default constructor since it’s empty. In such a case, it’s better to let the compiler generate it for us anyway.</p><p>Then, we’ll simply adapt the two arguments constructor to the new <code class="language-plaintext highlighter-rouge">std::array</code> data member. Yep, that one is also quite straight forward.</p><p>This leaves us with the single argument constructor. Adapting it to <code class="language-plaintext highlighter-rouge">m_data</code> is, again, quite trivial. Yet there is more to this constructor than meets the eye. In fact, we need to make to serious decisions:</p><ol><li>Do we allow implicit conversion from <code class="language-plaintext highlighter-rouge">TVec</code> to <code class="language-plaintext highlighter-rouge">Vec2</code>?<li>How do we make sure that client code never uses a <code class="language-plaintext highlighter-rouge">Vec2</code> with invalid values?</ol><p>Given the current usage of <code class="language-plaintext highlighter-rouge">Vec2</code> in the <em>Abuse</em> codebase, we can answer 1 with a resounding no. In no case are we justified to convert a single <code class="language-plaintext highlighter-rouge">int</code> or <code class="language-plaintext highlighter-rouge">float</code> into a <code class="language-plaintext highlighter-rouge">Vec2</code>. If client code wants to do that, it can simply use the single argument constructor of <code class="language-plaintext highlighter-rouge">Vec2</code>. (How I wish C++ would get rid of the implicit conversion <em>feature</em>. This would eliminate a whole class of potential bugs from otherwise working software. /rant)</p><p>Concerning 2, I see two possible answers. One would be to use <a href="https://en.cppreference.com/w/cpp/language/data_members#Member_initialization">defaut member initialization</a> to make sure that even a default-constructed <code class="language-plaintext highlighter-rouge">Vec2</code> has valid data members. The other, which I went for, is to use a default value in the single argument constructor. Since we’re in templated code, I can’t give a precise default value. It will be different for each type allowed by <code class="language-plaintext highlighter-rouge">Vec2</code>. This is why I rely on the default constructor of <code class="language-plaintext highlighter-rouge">TVec</code> to produce the value I require.</p><p>Whatever answer you choose for both of these questions in your future refactorings, please make sure to arm yourselves with at least one good static analyzer. Part of what we did here was to minimize misuses of <code class="language-plaintext highlighter-rouge">Vec2</code>. A good static analyzer will be your best friend in this endeavor.</p><h4 id="indexing">Indexing</h4><details> <summary><b>Changes</b></summary><div><div class="language-diff highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+</pre><td class="rouge-code"><pre><span class="gd">--- diffs/4-Constructors/vec2.h
+</span><span class="gi">+++ diffs/5-Indexing/vec2.h
+</span><span class="p">@@ -17,6 +17,7 @@</span>
+ #define __LOL_MATRIX_H__
+
+ #include &lt;array&gt;
+<span class="gi">+#include &lt;cassert&gt;
+</span> #include &lt;cmath&gt;
+ #include &lt;numeric&gt;
+ #include &lt;type_traits&gt;
+<span class="p">@@ -68,9 +69,6 @@</span>
+   }
+
+ #define OPERATORS(elems)                                                       \
+<span class="gd">-  inline T &amp;operator[](int n) { return *(&amp;x + n); }                            \
+-  inline T const &amp;operator[](int n) const { return *(&amp;x + n); }                \
+-                                                                               \
+</span>   VECTOR_OP(elems, -)                                                          \
+   VECTOR_OP(elems, +)                                                          \
+   VECTOR_OP(elems, *)                                                          \
+<span class="p">@@ -98,6 +96,13 @@</span>
+     explicit Vec2(TVec val = TVec{}) : m_data{val, val} { }
+     Vec2(TVec _x, TVec _y) : m_data{_x, _y} { }
+
++    // Indexing
+<span class="gi">+    constexpr const TVec&amp; operator[](int n) const
++    {
++        assert(0 &lt;= n &amp;&amp; n &lt; 2);
++        return m_data[n];
++    }
++
+</span>     // Accessors
+     constexpr TVec X() const { return m_data[0]; }
+     constexpr TVec Y() const { return m_data[1]; }
+</pre></table></code></div></div></div></details><p>Once again, the changes applied here are borderline trivial. This make it the perfect moment to take the time to talk about error handling. Looking at the original indexing operators, we can see that both safety and security were thrown out the window. Pass any index you want, they’ll take it!</p><p>So, how can we do better? Well, there’s plenty of choices (and you don’t necessarily need to use only one!):</p><ul><li><strong>Exceptions</strong>: While they don’t have the best of reputation in C++, exceptions still have their legitimate uses. The key is to use them in <em>exceptional</em> situations. I know this sounds obvious but I’ve seen time and time again code that used exceptions as the only mean of communicating errors. Client pressed a wrong key? Exception! Client made a typo? Exception! Client clicked on the wrong widget? Exception!</ul><figure><p style="text-align:center;"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="/assets/img/exception.jpg" alt="Image: " /></p><figcaption><span><center><i></i></center></span></figcaption></figure><ul><li><strong>Suicide</strong>: You’ve read that right. Let’s just crash the whole system! Though it might seem extreme at first glance, this is actually a very valid strategy for systems which can’t or won’t accept any erroneous state. It can also be an acceptable solution for when the program’s state has become too corrupted to continue safely. Be aware that this approach is best suited for systems that can reboot themselves (such as a <a href="https://www.youtube.com/watch?v=3SdSKZFoUa8">Mars Rover</a>) or that can still produce an error message to inform the user that everything is doomed beyond salvation (such as the classic BSoD).<li><strong>Error code</strong>: A tried-and-true technique from ages past which can still serve today. Combined with a good atlas of messages to inform a user, these codes can be a perfectly acceptable choice for many applications. They do have some problems though. For example, if you want to return values other than the error code itself, you need to have output parameters which can sometimes be a hassle to deal with. Also, this technique is less suited than other for composing errors to provide a clearer picture of what failed.<li><strong>Error type</strong>: This can be considered an evolution of the humble error code. With an error type, you can have rich (and possibly hierachical) errors that would contain all the information needed for the client to either fix reported error or fill out a detailled error report. What’s more, you can add validations within the type’s methods (in the form of assertions or by using the <code class="language-plaintext highlighter-rouge">[[nodiscard]]</code> attribute) to make sure that no error is forgotten. Unfortunately, this still doesn’t fix the need for output parameters when you when to return values out of a function.<li><strong>Optional value</strong>: This can either be a <code class="language-plaintext highlighter-rouge">std::optional</code> or a good old pointer. What’s nice with this approach is that we longer have to deal with output parameters. What’s less nice is that we lose information about what problems were encountered during a function call. We have no value and no explanations for the caller. This can be somewhat mitigated if there’s only a single cause of error, but it illustrate the limited use cases of this approach.<li><strong>Result type</strong>: A type that would combine the error type and the optional value you say? I’d say you might be on to something! In all seriousness, this is indeed an area that recently got a lot of attention (just look at <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2018/p0323r7.html"><code class="language-plaintext highlighter-rouge">std::expected</code></a> or Rust’s <a href="https://doc.rust-lang.org/std/result/enum.Result.html"><code class="language-plaintext highlighter-rouge">Result</code></a>). If you choose this option, make sure that the type you’re using is as lean as possible since it will most likely be plastered all over your codebase. You don’t want it to become a performance bottleneck.</ul><p>What did I choose in the end? None of the above! You see choosing the error handling model of your codebase (or just part of it) is something ripe with consequences. Expect an avalanche of changes once your choice is made. Since we’re focusing on a single, albeit foundational, class we want to contain the ripple effects of our changes on the rest of the codebase. As was mentionned previously, when doing a refactoring, you need to control the scope of your changes otherwise you’ll bite off more than you can chew.</p><p>Still, I did add an assertion to detect potential problems during development. With an extensive test suite, this could even be good enough to ship as is!</p><h4 id="comparison-and-equality-operators">Comparison and equality operators</h4><details> <summary><b>Changes</b></summary><div><div class="language-diff highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+</pre><td class="rouge-code"><pre><span class="gd">--- diffs/5-Indexing/vec2.h
+</span><span class="gi">+++ diffs/6-Comparison operators/vec2.h
+</span><span class="p">@@ -19,6 +19,8 @@</span>
+ #include &lt;array&gt;
+ #include &lt;cassert&gt;
+ #include &lt;cmath&gt;
+<span class="gi">+#include &lt;functional&gt;
++#include &lt;limits&gt;
+</span> #include &lt;numeric&gt;
+ #include &lt;type_traits&gt;
+
+@@ -40,14 +42,6 @@
+     return *this = (*this)op val;                                              \
+   }
+
+-#define BOOL_OP(elems, op, op2, ret)                                           \
+<span class="gd">-  inline bool operator op(Vec##elems&lt;T&gt; const &amp;val) const {                    \
+-    for (int n = 0; n &lt; elems; n++)                                            \
+-      if (!((*this)[n] op2 val[n]))                                            \
+-        return !ret;                                                           \
+-    return ret;                                                                \
+-  }
+-
+</span> #define SCALAR_OP(elems, op)                                                   \
+   inline Vec##elems&lt;T&gt; operator op(T const &amp;val) const {                       \
+     Vec##elems&lt;T&gt; ret;                                                         \
+<span class="p">@@ -66,18 +60,27 @@</span>
+   VECTOR_OP(elems, *)                                                          \
+   VECTOR_OP(elems, /)                                                          \
+                                                                                \
+<span class="gd">-  BOOL_OP(elems, ==, ==, true)                                                 \
+-  BOOL_OP(elems, !=, ==, false)                                                \
+-  BOOL_OP(elems, &lt;=, &lt;=, true)                                                 \
+-  BOOL_OP(elems, &gt;=, &gt;=, true)                                                 \
+-  BOOL_OP(elems, &lt;, &lt;, true)                                                   \
+-  BOOL_OP(elems, &gt;, &gt;, true)                                                   \
+-                                                                               \
+</span>   SCALAR_OP(elems, -)                                                          \
+   SCALAR_OP(elems, +)                                                          \
+   SCALAR_OP(elems, *)                                                          \
+   SCALAR_OP(elems, /)
+
++namespace details
+<span class="gi">+{
++    template &lt;typename TVec, typename TFunc&gt;
++    inline bool compareVector(const Vec2&lt;TVec&gt;&amp; lhs, const Vec2&lt;TVec&gt;&amp; rhs, TFunc&amp;&amp; func)
++    {
++        for(int iElem = 0; iElem &lt; 2; ++iElem)
++        {
++            if(!func(lhs[iElem], rhs[iElem]))
++            {
++                return false;
++            }
++        }
++        return true;
++    }
++}
++
+</span> template &lt;typename TVec&gt; class Vec2 {
+     static_assert(std::is_same_v&lt;TVec, int&gt; || std::is_same_v&lt;TVec, float&gt;);
+
+@@ -125,6 +128,26 @@
+     TData m_data{};
+ };
+
++// Equality operators
+<span class="gi">+inline bool operator==(const Vec2&lt;int&gt;&amp; lhs, const Vec2&lt;int&gt;&amp; rhs)
++{
++    return details::compareVector(lhs, rhs, std::equal_to&lt;int&gt;{});
++}
++inline bool operator==(const Vec2&lt;float&gt;&amp; lhs, const Vec2&lt;float&gt;&amp; rhs)
++{
++    return details::compareVector(lhs, rhs, [](float lhs, float rhs){ return std::fabs(lhs - rhs) &gt; std::numeric_limits&lt;float&gt;::epsilon(); } );
++}
++template&lt;typename TVec&gt; inline bool operator!=(const Vec2&lt;TVec&gt;&amp; lhs, const Vec2&lt;TVec&gt;&amp; rhs) { return !(lhs == rhs); }
++
++// Comparison operators
++template&lt;typename TVec&gt; inline bool operator&lt;(const Vec2&lt;TVec&gt;&amp; lhs, const Vec2&lt;TVec&gt;&amp; rhs)  
++{
++    return details::compareVector(lhs, rhs, [](TVec lhs, TVec rhs){ return lhs &lt; rhs; });
++}
++template&lt;typename TVec&gt; inline bool operator&lt;=(const Vec2&lt;TVec&gt;&amp; lhs, const Vec2&lt;TVec&gt;&amp; rhs) { return !(lhs &gt; rhs); }
++template&lt;typename TVec&gt; inline bool operator&gt;=(const Vec2&lt;TVec&gt;&amp; lhs, const Vec2&lt;TVec&gt;&amp; rhs) { return !(lhs &lt; rhs); }
++template&lt;typename TVec&gt; inline bool operator&gt;(const Vec2&lt;TVec&gt;&amp; lhs, const Vec2&lt;TVec&gt;&amp; rhs)  { return rhs &lt; lhs; }
++
+</span>
+ #define SCALAR_GLOBAL(elems, op, U)                                            \
+   template &lt;typename T&gt;                                                        \                                                    \
+</pre></table></code></div></div></div></details><p>I won’t go into the details of why you should prefer to write equality and comparison operators as non-member functions since there’s already <a href="https://stackoverflow.com/questions/4421706/what-are-the-basic-rules-and-idioms-for-operator-overloading/4421729#4421729">a quite thorough explanation of SO</a>. I will however point out that when implementing these operators, you only really have to implement two of them (<code class="language-plaintext highlighter-rouge">operator==</code> and <code class="language-plaintext highlighter-rouge">operator&lt;</code>) since every other can implemented in terms of these two. Once more, I encourage you to be lazy and write as less code as possible. This will help you save up on maintainance in the future.</p><p>Speaking of being lazy, we can implement both <code class="language-plaintext highlighter-rouge">operator==</code> and <code class="language-plaintext highlighter-rouge">operator&lt;</code> in a single free function that will invoke a callable (either an equality or comparison) on a pair of elements from two <code class="language-plaintext highlighter-rouge">Vec2</code>. Since we need to implement it in <code class="language-plaintext highlighter-rouge">vec2.h</code> (it needs to be templated after all), we’ll also need to hide it away inside a <code class="language-plaintext highlighter-rouge">details</code> namespace. We wouldn’t want to expose implementation details to client code. Some may argue that this is a weak attempt at encapsulation and they would be right. Still, it’s the best we can do until <a href="https://en.cppreference.com/w/cpp/language/modules">the standard modules</a> are made available to all.</p><h4 id="mathematical-operations">Mathematical operations</h4><details> <summary><b>Changes</b></summary><div><div class="language-diff highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+</pre><td class="rouge-code"><pre><span class="gd">--- diffs/6-Comparison operators/vec2.h
+</span><span class="gi">+++ diffs/7-Mathematical operators/
+</span><span class="p">@@ -28,43 +28,6 @@</span>
+
+ namespace lol {
+
+-#define VECTOR_OP(elems, op)                                                   \
+<span class="gd">-  template &lt;typename U&gt;                                                        \
+-  inline Vec##elems&lt;T&gt; operator op(Vec##elems&lt;U&gt; const &amp;val) const {           \
+-    Vec##elems&lt;T&gt; ret;                                                         \
+-    for (int n = 0; n &lt; elems; n++)                                            \
+-      ret[n] = (*this)[n] op val[n];                                           \
+-    return ret;                                                                \
+-  }                                                                            \
+-                                                                               \
+-  template &lt;typename U&gt;                                                        \
+-  inline Vec##elems&lt;T&gt; operator op##=(Vec##elems&lt;U&gt; const &amp;val) {              \
+-    return *this = (*this)op val;                                              \
+-  }
+-
+-#define SCALAR_OP(elems, op)                                                   \
+-  inline Vec##elems&lt;T&gt; operator op(T const &amp;val) const {                       \
+-    Vec##elems&lt;T&gt; ret;                                                         \
+-    for (int n = 0; n &lt; elems; n++)                                            \
+-      ret[n] = (*this)[n] op val;                                              \
+-    return ret;                                                                \
+-  }                                                                            \
+-                                                                               \
+-  inline Vec##elems&lt;T&gt; operator op##=(T const &amp;val) {                          \
+-    return *this = (*this)op val;                                              \
+-  }
+-
+-#define OPERATORS(elems)                                                       \
+-  VECTOR_OP(elems, -)                                                          \
+-  VECTOR_OP(elems, +)                                                          \
+-  VECTOR_OP(elems, *)                                                          \
+-  VECTOR_OP(elems, /)                                                          \
+-                                                                               \
+-  SCALAR_OP(elems, -)                                                          \
+-  SCALAR_OP(elems, +)                                                          \
+-  SCALAR_OP(elems, *)                                                          \
+-  SCALAR_OP(elems, /)
+-
+</span> namespace details
+ {
+     template &lt;typename TVec, typename TFunc&gt;
+<span class="p">@@ -122,9 +85,33 @@</span>
+         return std::sqrt(static_cast&lt;float&gt;(sqlen()));
+     }
+
+-  OPERATORS(2)
+<span class="gi">+    // Vector operators
++    Vec2&lt;TVec&gt;&amp; operator+=(const Vec2&lt;TVec&gt;&amp; val) { *this = vectorOpImpl(val, std::plus&lt;TVec&gt;{});       return *this; }
++    Vec2&lt;TVec&gt;&amp; operator-=(const Vec2&lt;TVec&gt;&amp; val) { *this = vectorOpImpl(val, std::minus&lt;TVec&gt;{});      return *this; }
++    Vec2&lt;TVec&gt;&amp; operator*=(const Vec2&lt;TVec&gt;&amp; val) { *this = vectorOpImpl(val, std::multiplies&lt;TVec&gt;{}); return *this; }
++    Vec2&lt;TVec&gt;&amp; operator/=(const Vec2&lt;TVec&gt;&amp; val) { *this = vectorOpImpl(val, std::divides&lt;TVec&gt;{});    return *this; }
++
++    // Scalar operators
++    Vec2&lt;TVec&gt;&amp; operator+=(const TVec&amp; val) { *this = scalarOpImpl(val, std::plus&lt;TVec&gt;{});       return *this; }
++    Vec2&lt;TVec&gt;&amp; operator-=(const TVec&amp; val) { *this = scalarOpImpl(val, std::minus&lt;TVec&gt;{});      return *this; }
++    Vec2&lt;TVec&gt;&amp; operator*=(const TVec&amp; val) { *this = scalarOpImpl(val, std::multiplies&lt;TVec&gt;{}); return *this; }
++    Vec2&lt;TVec&gt;&amp; operator/=(const TVec&amp; val) { *this = scalarOpImpl(val, std::divides&lt;TVec&gt;{});    return *this; }
+</span>
+ private:
+<span class="gi">+    template&lt;typename TFunc&gt;
++    Vec2&lt;TVec&gt;&amp; vectorOpImpl(const Vec2&lt;TVec&gt;&amp; val, TFunc&amp;&amp; func)
++    {
++        std::transform(val.cbegin(), val.cend(), m_data.begin(), m_data.begin(), func);
++        return *this;
++    }
++
++    template&lt;typename TFunc&gt;
++    Vec2&lt;TVec&gt;&amp; scalarOpImpl(const TVec&amp; val, TFunc&amp;&amp; func)
++    {
++        std::transform(m_data.begin(), m_data.end(), m_data.begin(), [&amp;func, &amp;val](TVec elem){ return func(elem, val); });
++        return *this;
++    }
++
+</span>     TData m_data{};
+ };
+
+@@ -148,28 +135,17 @@
+ template&lt;typename TVec&gt; inline bool operator&gt;=(const Vec2&lt;TVec&gt;&amp; lhs, const Vec2&lt;TVec&gt;&amp; rhs) { return !(lhs &lt; rhs); }
+ template&lt;typename TVec&gt; inline bool operator&gt;(const Vec2&lt;TVec&gt;&amp; lhs, const Vec2&lt;TVec&gt;&amp; rhs)  { return rhs &lt; lhs; }
+
+-
+<span class="gd">-#define SCALAR_GLOBAL(elems, op, U)                                            \
+-  template &lt;typename T&gt;                                                        \
+-  static inline Vec##elems&lt;U&gt; operator op(U const &amp;val,                        \
+-                                          Vec##elems&lt;T&gt; const &amp;that) {         \
+-    Vec##elems&lt;U&gt; ret;                                                         \
+-    for (int n = 0; n &lt; elems; n++)                                            \
+-      ret[n] = val op that[n];                                                 \
+-    return ret;                                                                \
+-  }
+-
+-#define SCALAR_GLOBAL2(elems, op)                                              \
+-  SCALAR_GLOBAL(elems, op, int)                                                \
+-  SCALAR_GLOBAL(elems, op, float)
+-
+-#define GLOBALS(elems)                                                         \
+-  SCALAR_GLOBAL2(elems, -)                                                     \
+-  SCALAR_GLOBAL2(elems, +)                                                     \
+-  SCALAR_GLOBAL2(elems, *)                                                     \
+-  SCALAR_GLOBAL2(elems, /)
+-
+-GLOBALS(2)
+</span><span class="gi">+// Vector operators
++template&lt;typename TVec&gt; inline Vec2&lt;TVec&gt; operator+(Vec2&lt;TVec&gt; lhs, const Vec2&lt;TVec&gt;&amp; rhs) { lhs += rhs; return lhs; }
++template&lt;typename TVec&gt; inline Vec2&lt;TVec&gt; operator-(Vec2&lt;TVec&gt; lhs, const Vec2&lt;TVec&gt;&amp; rhs) { lhs -= rhs; return lhs; }
++template&lt;typename TVec&gt; inline Vec2&lt;TVec&gt; operator*(Vec2&lt;TVec&gt; lhs, const Vec2&lt;TVec&gt;&amp; rhs) { lhs *= rhs; return lhs; }
++template&lt;typename TVec&gt; inline Vec2&lt;TVec&gt; operator/(Vec2&lt;TVec&gt; lhs, const Vec2&lt;TVec&gt;&amp; rhs) { lhs /= rhs; return lhs; }
++
++// Scalar operators
++template&lt;typename TVec&gt; inline Vec2&lt;TVec&gt; operator+(Vec2&lt;TVec&gt; lhs, const TVec&amp; rhs) { lhs += rhs; return lhs; }
++template&lt;typename TVec&gt; inline Vec2&lt;TVec&gt; operator-(Vec2&lt;TVec&gt; lhs, const TVec&amp; rhs) { lhs -= rhs; return lhs; }
++template&lt;typename TVec&gt; inline Vec2&lt;TVec&gt; operator*(Vec2&lt;TVec&gt; lhs, const TVec&amp; rhs) { lhs *= rhs; return lhs; }
++template&lt;typename TVec&gt; inline Vec2&lt;TVec&gt; operator/(Vec2&lt;TVec&gt; lhs, const TVec&amp; rhs) { lhs /= rhs; return lhs; }
+</span>
+ } /* namespace lol */
+</pre></table></code></div></div></div></details><p>As it turns out, the mathematical operators are surprisingly easy to implement. The original implementation had the right idea: there are only two high-level operations to think about. One is the scalar operation and the other is the vector operation. Whatever concrete operation we’re talking about, it’s bound to be a specialization of either of these. However, what’s less than ideal about the original code is that it implements these operations in terms of macros. Goodbye debuggability!</p><p>To allow for a broad range of functions to be applied to <code class="language-plaintext highlighter-rouge">Vec2</code>, our new operations will therefore use templates to abstract both the type of the data contained within <code class="language-plaintext highlighter-rouge">Vec2</code> and the operation to apply on it. As mentionned before, we only have two operations to think about: scalar (<code class="language-plaintext highlighter-rouge">scalarOpImpl</code>) and vector (<code class="language-plaintext highlighter-rouge">vectorOpImpl</code>). In both cases, we can leverage the C++ standard library, more precisely <code class="language-plaintext highlighter-rouge">std::transform</code>, to do the work for us. Once these core operations are dealt with, all that’s left is invoking them with the right function/functor for a given operator.</p><p>Also, notice how only the operators which do an assignment in addition to a given operation are implemented as member functions. This is because they’re the only ones that will have an effect on <code class="language-plaintext highlighter-rouge">this</code>. Knowing this (pun intended), I can free all other operators to reduce the API of <code class="language-plaintext highlighter-rouge">Vec2</code> to a minimum.</p><p>One other thing that might seem strange to some is that we take the first operand of a mathematical operator by value. The fact is that, for these operators, a new <code class="language-plaintext highlighter-rouge">Vec2</code> is guaranteed to be constructed. Armed with this knowledge, I’ve decided to create this new <code class="language-plaintext highlighter-rouge">Vec2</code> as soon as possible. This then shortens the implementation of the operators. Again, the less code you write, the less you have to maintain.</p><h3 id="naming-convention">Naming convention</h3><p>Attentive readers might have noticed that, in every diff that I presented up until now, I made sure to rename each and every variable that had a non-significative name to something more evocative of its purpose. Remember that a key to maintainable software is that a new developper should be able to figure out (at least at a high level) what a given piece of code does by reading it. As such, using non-descriptive names (or even worse: single letter name) is working actively against that goal.</p><h3 id="documentation">Documentation</h3><p>The documentation of <code class="language-plaintext highlighter-rouge">Vec2</code> leaves a lot to be desired. What’s worse is I didn’t make any effort to improve the situation! If I had to do a code review on myself, I probably would have refused my patch for lack of proper documentation on at least the general intent and purpose of the class. Please be better than me on this!</p><h2 id="conclusion">Conclusion</h2><p>In lieu of a conclusion, I’d encourage you to go back and reread the <strong>Motivation</strong> and <strong>Preparations</strong> section. I hoped I’ve demonstrated that, when undertaking a refactoring, you need to make sure you understand what you’re getting yourself into. If not, then you may be comitting <a href="https://www.joelonsoftware.com/2000/04/06/things-you-should-never-do-part-i/">one of the worst sin of software development</a>.</p></div><div class="post-tail-wrapper text-muted"><div class="post-tags"> <i class="fa fa-tags fa-fw mr-1"></i> <a href="/tags/software-development/" class="post-tag no-text-decoration" >Software Development</a></div><div class="post-tail-bottom d-flex justify-content-between align-items-center mt-3 pt-5 pb-2"><div class="license-wrapper"> This post is licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> by the author.</div><div class="share-wrapper"> <span class="share-label text-muted mr-1">Share</span> <span class="share-icons"> <a href="https://twitter.com/intent/tweet?text=Refactoring 101 - /* Insert Code Here */&url=https://faouellet.github.io//refactoring/" data-toggle="tooltip" data-placement="top" title="Twitter" target="_blank" rel="noopener" aria-label="Twitter"> <i class="fa-fw fab fa-twitter"></i> </a> <a href="https://www.facebook.com/sharer/sharer.php?title=Refactoring 101 - /* Insert Code Here */&u=https://faouellet.github.io//refactoring/" data-toggle="tooltip" data-placement="top" title="Facebook" target="_blank" rel="noopener" aria-label="Facebook"> <i class="fa-fw fab fa-facebook-square"></i> </a> <a href="https://telegram.me/share?text=Refactoring 101 - /* Insert Code Here */&url=https://faouellet.github.io//refactoring/" data-toggle="tooltip" data-placement="top" title="Telegram" target="_blank" rel="noopener" aria-label="Telegram"> <i class="fa-fw fab fa-telegram"></i> </a> <i class="fa-fw fas fa-link small" onclick="copyLink()" data-toggle="tooltip" data-placement="top" title="Copy link"></i> </span></div></div></div></div></div><div id="panel-wrapper" class="col-xl-3 pl-2 text-muted topbar-down"><div class="access"><div id="access-tags"> <span>Trending Tags</span><div class="d-flex flex-wrap mt-3 mb-1 mr-3"> <a class="post-tag" href="/tags/database/">Database</a> <a class="post-tag" href="/tags/source-control/">Source Control</a> <a class="post-tag" href="/tags/c/">C++</a> <a class="post-tag" href="/tags/build-system/">Build System</a> <a class="post-tag" href="/tags/parallelism/">Parallelism</a> <a class="post-tag" href="/tags/compiler-development/">Compiler Development</a> <a class="post-tag" href="/tags/software-development/">Software Development</a> <a class="post-tag" href="/tags/c-amp/">C++AMP</a> <a class="post-tag" href="/tags/concurrency/">Concurrency</a> <a class="post-tag" href="/tags/gpgpu/">GPGPU</a></div></div></div><div id="toc-wrapper" class="pl-0 pr-4 mb-5"> <span class="pl-3 pt-2 mb-2">Contents</span><nav id="toc" data-toggle="toc"></nav></div></div></div><div class="row"><div class="col-12 col-lg-11 col-xl-8"><div id="post-extend-wrapper" class="pl-1 pr-1 pl-sm-2 pr-sm-2 pl-md-4 pr-md-4"><div id="related-posts" class="mt-5 mb-2 mb-sm-4"><h3 class="pt-2 mt-1 mb-4 ml-1" data-toc-skip>Further Reading</h3><div class="card-deck mb-4"><div class="card"> <a href="/codereview/"><div class="card-body"> <span class="timeago small" > Oct 12, 2020 <i class="unloaded">2020-10-12T00:00:00-04:00</i> </span><h3 class="pt-0 mt-1 mb-3" data-toc-skip>On reviewing code</h3><div class="text-muted small"><p> All the code for this article can be found here. Foreword As with the Refactoring 101 article, this article is an adaptation of materials I made for a class that I once contributed to as a te...</p></div></div></a></div><div class="card"> <a href="/dvcs-next/"><div class="card-body"> <span class="timeago small" > Feb 9 <i class="unloaded">2021-02-09T00:00:00-05:00</i> </span><h3 class="pt-0 mt-1 mb-3" data-toc-skip>Of source control and databases - Annex C - Further developments</h3><div class="text-muted small"><p> All the code for the articles in this series can be found here. For those of you interested in deepening your understanding of distributed source control systems, here are some projects to ext...</p></div></div></a></div><div class="card"> <a href="/dvcs-error/"><div class="card-body"> <span class="timeago small" > Feb 8 <i class="unloaded">2021-02-08T00:00:00-05:00</i> </span><h3 class="pt-0 mt-1 mb-3" data-toc-skip>Of source control and databases - Annex B - Error management</h3><div class="text-muted small"><p> All the code for the articles in this series can be found here. To cap off this series, I wanted to talk about how I approached error management in DVCSUS. I already went into details for some...</p></div></div></a></div></div></div><div class="post-navigation d-flex justify-content-between"> <a href="/interpreter/" class="btn btn-outline-primary"><p>Trying out different interpreter implementations</p></a> <a href="/codereview/" class="btn btn-outline-primary"><p>On reviewing code</p></a></div><div id="disqus" class="pt-2 pb-2"><p class="font-italic text-center text-muted small"> Comments powered by <a href="https://disqus.com/">Disqus</a>.</p></div><script src="/assets/js/lib/jquery.disqusloader.min.js"></script> <script> var options = { scriptUrl: '//insertcodehere.disqus.com/embed.js', disqusConfig: function() { this.page.url = 'https://faouellet.github.io//refactoring/'; this.page.identifier = '/refactoring/'; } }; $.disqusLoader('#disqus', options); </script></div></div></div><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lozad/dist/lozad.min.js"></script> <script type="text/javascript"> const imgs = document.querySelectorAll('#post-wrapper img'); const observer = lozad(imgs); observer.observe(); </script><footer class="d-flex w-100 justify-content-center"><div class="d-flex justify-content-between align-items-center"><div class="footer-left"><p class="mb-0"> © 2021 <a href="https://github.com/faouellet">Félix-Antoine Ouellet</a>. <span data-toggle="tooltip" data-placement="top" title="Except where otherwise noted, the blog posts on this site are licensed under the Creative Commons Attribution 4.0 International (CC BY 4.0) License by the author.">Some rights reserved.</span></p></div><div class="footer-right"><p class="mb-0"> Powered by <a href="https://jekyllrb.com" target="_blank" rel="noopener">Jekyll</a> with <a href="https://github.com/cotes2020/jekyll-theme-chirpy/" target="_blank" rel="noopener">Chirpy</a> theme.</p></div></div></footer></div><div id="search-result-wrapper" class="d-flex justify-content-center unloaded"><div class="col-12 col-xl-11 post-content"><div id="search-hints"><h4 class="text-muted mb-4">Trending Tags</h4><a class="post-tag" href="/tags/database/">Database</a> <a class="post-tag" href="/tags/source-control/">Source Control</a> <a class="post-tag" href="/tags/c/">C++</a> <a class="post-tag" href="/tags/build-system/">Build System</a> <a class="post-tag" href="/tags/parallelism/">Parallelism</a> <a class="post-tag" href="/tags/compiler-development/">Compiler Development</a> <a class="post-tag" href="/tags/software-development/">Software Development</a> <a class="post-tag" href="/tags/c-amp/">C++AMP</a> <a class="post-tag" href="/tags/concurrency/">Concurrency</a> <a class="post-tag" href="/tags/gpgpu/">GPGPU</a></div><div id="search-results" class="d-flex flex-wrap justify-content-center text-muted mt-3"></div></div></div></div><div id="mask"></div><a id="back-to-top" href="#" aria-label="back-to-top" class="btn btn-lg btn-box-shadow" role="button"> <i class="fas fa-angle-up"></i> </a> <script src="https://cdn.jsdelivr.net/npm/simple-jekyll-search@1.7.3/dest/simple-jekyll-search.min.js"></script> <script> SimpleJekyllSearch({ searchInput: document.getElementById('search-input'), resultsContainer: document.getElementById('search-results'), json: '/assets/js/data/search.json', searchResultTemplate: '<div class="pl-1 pr-1 pl-sm-2 pr-sm-2 pl-lg-4 pr-lg-4 pl-xl-0 pr-xl-0"> <a href="https://faouellet.github.io/{url}">{title}</a><div class="post-meta d-flex flex-column flex-sm-row text-muted mt-1 mb-1"><div class="mr-sm-4"><i class="far fa-folder fa-fw"></i>{categories}</div><div><i class="fa fa-tag fa-fw"></i>{tags}</div></div><p>{snippet}</p></div>', noResultsText: '<p class="mt-5">Oops! No result founds.</p>' }); </script>

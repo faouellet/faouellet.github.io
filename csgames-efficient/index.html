@@ -1,0 +1,327 @@
+<!DOCTYPE html><html lang="en" mode="dark" ><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><meta name="theme" content="Chirpy v2.7.1"><meta name="generator" content="Jekyll v4.1.1" /><meta property="og:title" content="CS Games 2015 Parallelism Challenge - A More Efficient Solution" /><meta name="author" content="Félix-Antoine Ouellet" /><meta property="og:locale" content="en_US" /><meta name="description" content="My personal blog." /><meta property="og:description" content="My personal blog." /><link rel="canonical" href="https://faouellet.github.io//csgames-efficient/" /><meta property="og:url" content="https://faouellet.github.io//csgames-efficient/" /><meta property="og:site_name" content="/* Insert Code Here */" /><meta property="og:type" content="article" /><meta property="article:published_time" content="2016-03-03T00:00:00-05:00" /><meta name="twitter:card" content="summary" /><meta property="twitter:title" content="CS Games 2015 Parallelism Challenge - A More Efficient Solution" /> <script type="application/ld+json"> {"description":"My personal blog.","url":"https://faouellet.github.io//csgames-efficient/","headline":"CS Games 2015 Parallelism Challenge - A More Efficient Solution","dateModified":"2016-03-03T00:00:00-05:00","@type":"BlogPosting","datePublished":"2016-03-03T00:00:00-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://faouellet.github.io//csgames-efficient/"},"author":{"@type":"Person","name":"Félix-Antoine Ouellet"},"@context":"https://schema.org"}</script><title>CS Games 2015 Parallelism Challenge - A More Efficient Solution | /* Insert Code Here */</title><link rel="shortcut icon" href="/assets/img/favicons/favicon.ico" type="image/x-icon"><link rel="icon" href="/assets/img/favicons/favicon.ico" type="image/x-icon"><link rel="apple-touch-icon" href="/assets/img/favicons/apple-icon.png"><link rel="apple-touch-icon" href="/assets/img/favicons/apple-icon-precomposed.png"><link rel="apple-touch-icon" sizes="57x57" href="/assets/img/favicons/apple-icon-57x57.png"><link rel="apple-touch-icon" sizes="60x60" href="/assets/img/favicons/apple-icon-60x60.png"><link rel="apple-touch-icon" sizes="72x72" href="/assets/img/favicons/apple-icon-72x72.png"><link rel="apple-touch-icon" sizes="76x76" href="/assets/img/favicons/apple-icon-76x76.png"><link rel="apple-touch-icon" sizes="114x114" href="/assets/img/favicons/apple-icon-114x114.png"><link rel="apple-touch-icon" sizes="120x120" href="/assets/img/favicons/apple-icon-120x120.png"><link rel="apple-touch-icon" sizes="144x144" href="/assets/img/favicons/apple-icon-144x144.png"><link rel="apple-touch-icon" sizes="152x152" href="/assets/img/favicons/apple-icon-152x152.png"><link rel="apple-touch-icon" sizes="180x180" href="/assets/img/favicons/apple-icon-180x180.png"><link rel="icon" type="image/png" sizes="192x192" href="/assets/img/favicons/android-icon-192x192.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicons/favicon-32x32.png"><link rel="icon" type="image/png" sizes="96x96" href="/assets/img/favicons/favicon-96x96.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicons/favicon-16x16.png"><link rel="manifest" href="/assets/img/favicons/manifest.json"><meta name='msapplication-config' content='/assets/img/favicons/browserconfig.xml'><meta name="msapplication-TileColor" content="#ffffff"><meta name="msapplication-TileImage" content="/assets/img/favicons/ms-icon-144x144.png"><meta name="theme-color" content="#ffffff"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://fonts.gstatic.com"><link rel="preconnect" href="https://www.google-analytics.com" crossorigin="use-credentials"><link rel="dns-prefetch" href="https://www.google-analytics.com"><link rel="preconnect" href="https://www.googletagmanager.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><link rel="preconnect" href="cdn.jsdelivr.net"><link rel="dns-prefetch" href="cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha256-LA89z+k9fjgMKQ/kq4OO2Mrf8VltYml/VES+Rg0fh20=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.11.2/css/all.min.css" integrity="sha256-+N4/V/SbAFiW1MPBCXnfnP9QSN3+Keu+NlB+0ev/YKQ=" crossorigin="anonymous"><link rel="preload" href="/assets/css/post.css" as="style"><link rel="stylesheet" href="/assets/css/post.css"><link rel="preload" as="style" href="/assets/css/lib/bootstrap-toc.min.css"><link rel="stylesheet" href="/assets/css/lib/bootstrap-toc.min.css" /> <script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script> <script defer src="https://cdn.jsdelivr.net/combine/npm/popper.js@1.15.0,npm/bootstrap@4/dist/js/bootstrap.min.js"></script> <script async src="/assets/js/post.min.js"></script> <script defer src="/app.js"></script> <script defer src="https://www.googletagmanager.com/gtag/js?id=UA-71911238-1"></script> <script> document.addEventListener("DOMContentLoaded", function(event) { window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'UA-71911238-1'); }); </script><body data-spy="scroll" data-target="#toc"><div id="sidebar" class="d-flex flex-column align-items-end"><div class="profile-wrapper text-center"><div id="avatar"> <a href="/" alt="avatar" class="mx-auto"> <img src="/assets/img/avatar.jpg" alt="avatar" onerror="this.style.display='none'"> </a></div><div class="site-title mt-3"> <a href="/">/* Insert Code Here */</a></div><div class="site-subtitle font-italic"></div></div><ul class="w-100"><li class="nav-item"> <a href="/" class="nav-link"> <i class="fa-fw fas fa-home ml-xl-3 mr-xl-3 unloaded"></i> <span>HOME</span> </a><li class="nav-item"> <a href="/tabs/categories/" class="nav-link"> <i class="fa-fw fas fa-stream ml-xl-3 mr-xl-3 unloaded"></i> <span>CATEGORIES</span> </a><li class="nav-item"> <a href="/tabs/tags/" class="nav-link"> <i class="fa-fw fas fa-tags ml-xl-3 mr-xl-3 unloaded"></i> <span>TAGS</span> </a><li class="nav-item"> <a href="/tabs/archives/" class="nav-link"> <i class="fa-fw fas fa-archive ml-xl-3 mr-xl-3 unloaded"></i> <span>ARCHIVES</span> </a><li class="nav-item"> <a href="/tabs/about/" class="nav-link"> <i class="fa-fw fas fa-info ml-xl-3 mr-xl-3 unloaded"></i> <span>ABOUT</span> </a></ul><div class="sidebar-bottom mt-auto d-flex flex-wrap justify-content-center"> <a href="https://github.com/faouellet" aria-label="github" target="_blank" rel="noopener"> <i class="fab fa-github-alt"></i> </a> <a href="https://www.linkedin.com/in/felixantoineouellet/" aria-label="linkedin" target="_blank" rel="noopener"> <i class="fab fa-linkedin"></i> </a> <a href=" javascript:location.href = 'mailto:' + ['faouellet','gmail.com'].join('@')" aria-label="email" > <i class="fas fa-envelope"></i> </a> <a href="/feed.xml" aria-label="rss" > <i class="fas fa-rss"></i> </a></div></div><div id="topbar-wrapper" class="row justify-content-center topbar-down"><div id="topbar" class="col-11 d-flex h-100 align-items-center justify-content-between"> <span id="breadcrumb"> <span> <a href="/"> Posts </a> </span> <span>CS Games 2015 Parallelism Challenge - A More Efficient Solution</span> </span> <i id="sidebar-trigger" class="fas fa-bars fa-fw"></i><div id="topbar-title"> Post</div><i id="search-trigger" class="fas fa-search fa-fw"></i> <span id="search-wrapper" class="align-items-center"> <i class="fas fa-search fa-fw"></i> <input class="form-control" id="search-input" type="search" aria-label="search" placeholder="Search..."> <i class="fa fa-times-circle fa-fw" id="search-cleaner"></i> </span> <span id="search-cancel" >Cancel</span></div></div><div id="main-wrapper"><div id="main"><div class="row"><div id="post-wrapper" class="col-12 col-lg-11 col-xl-8"><div class="post pl-1 pr-1 pl-sm-2 pr-sm-2 pl-md-4 pr-md-4"><h1 data-toc-skip>CS Games 2015 Parallelism Challenge - A More Efficient Solution</h1><div class="post-meta text-muted d-flex flex-column"><div> <span class="timeago " data-toggle="tooltip" data-placement="bottom" title="Thu, Mar 3, 2016, 12:00 AM -0500" > Mar 3, 2016 <i class="unloaded">2016-03-03T00:00:00-05:00</i> </span> by <span class="author"> Félix-Antoine Ouellet </span></div><div> <span class="readtime" data-toggle="tooltip" data-placement="bottom" title="2318 words">12 min</span></div></div><div class="post-content"><p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="/assets/img/csgames-logo.png" alt="Desktop View" /></p><p>What’s up people!</p><p>Last time, we went over some potential solutions for a problem given during the parallelism challenge. As you may remember (if you don’t, go <a href="http://faouellet.github.io/csgames-simple/">here</a>), I put a special emphasis on not trying to go overboard with threads. My reasoning was that trying to start as many threads as possible right off the bat would be counter-productive because it could yield quite the complex solution. Some might disagree and find the solution using inner parallelism to be most elegant one. But they would be wrong. Also, consider the following:</p><div class="table-wrapper"><table><thead><tr><th style="text-align: left">Method<th style="text-align: right">Time (ms)<tbody><tr><td style="text-align: left">Sequential<td style="text-align: right">141.84<tr><td style="text-align: left">Inner parallelism<td style="text-align: right">94.44<tr><td style="text-align: left"><em><strong>Outer parallelism</strong></em><td style="text-align: right"><em><strong>90.72</strong></em></table></div><p>What’s this you ask? Well, it’s just a small experiment I ran on my machine. Basically, I used all three proposed solutions to find the last element in a vector containing 100,000,000 elements (remember we’re kind of in a real time setting here, so the worst case matters a lot). This is repeated 25 times to give a small sample of what was expected to happen when we evaluated the students’ solution. As you can see, I wasn’t kidding when I told you that you should try to avoid creating and deleting too many threads.</p><figure><p style="text-align:center;"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="/assets/img/drugs.jpg" alt="Image: Threads are like drugs: use them in the right amounts. Wait, that doesn't sound right..." /></p><figcaption><span><center><i>Threads are like drugs: use them in the right amounts. Wait, that doesn't sound right...</i></center></span></figcaption></figure><p>This then begs the question: are we still dealing with too many threads? The answer is, without any surprises since I’m asking, yes. The truly best way to reduce the threads created and destroyed is by using a thread pool i.e. a data structure that will manage a number a threads for as long as you have tasks to give it. Bonus, it also impress some challenge’s organizers resulting in a better score because of a WOW factor. In fact, it was what I personally hoped that at least one of the teams would produce during the parallelism challenge. Alas, it didn’t happen. Still, I’ll present what I expected of the competitors.</p><p>Before we go any further, I want to say that what I’m going to present is largely inspired by something that my friend (and programming guru) Patrice Roy already did. If you can understand French, go have a look at his <a href="http://h-deb.clg.qc.ca/">website</a>, it’s really worth it.</p><p>So without further ado, let’s implement a thread pool.</p><p>The first thing a thread pool needs is threads. Thus we will start with the following:</p><div class="language-cpp highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+</pre><td class="rouge-code"><pre><span class="k">class</span> <span class="nc">ThreadPool</span>
+<span class="p">{</span>
+<span class="nl">public:</span>
+  <span class="n">ThreadPool</span><span class="p">(</span><span class="kt">size_t</span> <span class="n">nbThreads</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="kr">thread</span><span class="o">::</span><span class="n">hardware_concurrency</span><span class="p">())</span>
+  <span class="p">{</span>
+    <span class="n">mThreads</span><span class="p">.</span><span class="n">reserve</span><span class="p">(</span><span class="n">nbThreads</span><span class="p">);</span>
+  <span class="p">}</span>
+
+<span class="nl">private:</span>
+  <span class="n">ThreadPool</span><span class="p">(</span><span class="k">const</span> <span class="n">ThreadPool</span><span class="o">&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
+  <span class="n">ThreadPool</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">ThreadPool</span><span class="o">&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
+
+<span class="nl">private:</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="kr">thread</span><span class="o">&gt;</span> <span class="n">mWorkers</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></table></code></div></div><p>This first pass defines the very basis on which a thread pool can be built. By default, we will ask for as many threads as there are cores on the machine it will run through a call to <a href="http://en.cppreference.com/w/cpp/thread/thread/hardware_concurrency"><code class="language-plaintext highlighter-rouge">std::thread::hardware_concurrency</code></a>. This is appropriate for us since our threads will not do any kind of I/O. If we were to use the <code class="language-plaintext highlighter-rouge">ThreadPool</code> for more I/O-intensive purposes, a higher number of threads would be preferable to compensate for threads busy doing things other than computing stuff. Also, the copy constructor and the assignment operator have been deleted since copying a thread pool is not a really good idea.</p><p>Next, we have to give those worker threads something to do. But first, we need to decide what IS a task. Remember that we have to deal with six different kinds of problem that have different types of inputs. A natural choice would be to involve templates and a <a href="http://en.cppreference.com/w/cpp/utility/functional/function"><code class="language-plaintext highlighter-rouge">std::function</code></a>, or, more appropriatedly in this context, a <a href="http://en.cppreference.com/w/cpp/thread/packaged_task"><code class="language-plaintext highlighter-rouge">std::packaged_task</code></a>. But wait! If we do this we would then need to apply this kind of change to our thread pool.</p><div class="language-cpp highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+</pre><td class="rouge-code"><pre><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">R</span><span class="p">,</span> <span class="k">typename</span><span class="o">...</span> <span class="nc">Args</span><span class="p">&gt;</span> <span class="c1">// Humm... something doesn't</span>
+                                        <span class="c1">// seem right around here</span>
+<span class="k">class</span> <span class="nc">ThreadPool</span>
+<span class="p">{</span>
+<span class="nl">public:</span>
+  <span class="n">ThreadPool</span><span class="p">(</span><span class="kt">size_t</span> <span class="n">nbThreads</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="kr">thread</span><span class="o">::</span><span class="n">hardware_concurrency</span><span class="p">())</span>
+  <span class="p">{</span>
+    <span class="n">mThreads</span><span class="p">.</span><span class="n">reserve</span><span class="p">(</span><span class="n">nbThreads</span><span class="p">);</span>
+  <span class="p">}</span>
+
+<span class="nl">private:</span>
+  <span class="n">ThreadPool</span><span class="p">(</span><span class="k">const</span> <span class="n">ThreadPool</span><span class="o">&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
+  <span class="n">ThreadPool</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">ThreadPool</span><span class="o">&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
+
+<span class="nl">private:</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="kr">thread</span><span class="o">&gt;</span> <span class="n">mWorkers</span><span class="p">;</span>
+  <span class="c1">// Probably because of the line below</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">deque</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">packaged_task</span><span class="o">&lt;</span><span class="n">R</span><span class="p">(</span><span class="n">Args</span><span class="p">...)</span><span class="o">&gt;&gt;</span> <span class="n">mTasks</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></table></code></div></div><p>By trying to add generic tasks to the thread pool, we forced the thread pool to be generic on the basis of the return type and the arguments’ types of its tasks. This will result in having to instantiate a <code class="language-plaintext highlighter-rouge">ThreadPool</code> for each type of task we want to handle. In other words, we lost genericity by trying to use generic types! Ponder that one for a while.</p><p>To fix this situation, we can use a simple C++ trick: a non-generic base class. The idea here is to hide the fact that we store different kinds of generic tasks in our task queue by hiding them behind pointers to their non-generic interface. This will eliminate the need to have template at the <code class="language-plaintext highlighter-rouge">ThreadPool</code> level since there won’t be generic member variables inside it anymore. Having said that here’s our new task abstraction.</p><div class="language-cpp highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+</pre><td class="rouge-code"><pre><span class="k">class</span> <span class="nc">ThreadPool</span>
+<span class="p">{</span>
+<span class="nl">private:</span>
+  <span class="k">class</span> <span class="nc">ITask</span>
+  <span class="p">{</span>
+  <span class="nl">public:</span>
+    <span class="k">virtual</span> <span class="o">~</span><span class="n">ITask</span><span class="p">()</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">Run</span><span class="p">()</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="p">};</span>
+
+  <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">R</span><span class="p">&gt;</span>
+  <span class="k">class</span> <span class="nc">Task</span>
+  <span class="p">{</span>
+  <span class="nl">public:</span>
+    <span class="k">virtual</span> <span class="o">~</span><span class="n">Task</span><span class="p">()</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">Run</span><span class="p">()</span> <span class="k">override</span> <span class="p">{</span> <span class="n">mTask</span><span class="p">();</span> <span class="p">}</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">future</span><span class="o">&lt;</span><span class="n">R</span><span class="o">&gt;</span> <span class="n">GetFuture</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="n">mTask</span><span class="p">.</span><span class="n">get_future</span><span class="p">();</span> <span class="p">}</span>
+
+  <span class="nl">private:</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">packaged_task</span><span class="o">&lt;</span><span class="n">R</span><span class="p">()</span><span class="o">&gt;</span> <span class="n">mTask</span><span class="p">;</span>
+  <span class="p">};</span>
+
+<span class="cm">/* ... */</span>
+
+<span class="nl">private:</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="kr">thread</span><span class="o">&gt;</span> <span class="n">mWorkers</span><span class="p">;</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">deque</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">ITask</span><span class="o">&gt;&gt;</span> <span class="n">mTasks</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></table></code></div></div><p>Now, there are many things to explain about the task implementation. First off, notice how I’ve gotten rid of the <code class="language-plaintext highlighter-rouge">Args...</code> types. The reason why I did this is because they quite frankly weren’t necessary for having tasks that can take any kinds of arguments. I’ll show you how in a moment (spoilers: it involves lambda capture). Another thing to notice is the <code class="language-plaintext highlighter-rouge">GetFuture</code> method that I added. The reason I added it is because I want the client code to be able to get results back from the <code class="language-plaintext highlighter-rouge">ThreadPool</code>. The method by which I do so is by giving the client a <a href="http://en.cppreference.com/w/cpp/thread/future"><code class="language-plaintext highlighter-rouge">std::future</code></a> that it can use to get the desired result when it needs to. The last thing to see here is that I’ve chosen to use a <a href="http://en.cppreference.com/w/cpp/container/deque"><code class="language-plaintext highlighter-rouge">std::deque</code></a> of <a href="http://en.cppreference.com/w/cpp/memory/unique_ptr"><code class="language-plaintext highlighter-rouge">std::unique_ptr</code></a> to be my task container. The reason for using a <a href="http://en.cppreference.com/w/cpp/container/deque"><code class="language-plaintext highlighter-rouge">std::deque</code></a> is because we want a FIFO container to ensure that every task will be executed while the reason for the use <a href="http://en.cppreference.com/w/cpp/memory/unique_ptr"><code class="language-plaintext highlighter-rouge">std::unique_ptr</code></a> is, as my prime minister would say, because it’s 2016.</p><p>Now that we know what a task is, it’s time to give some to our threads. To do so, we’ll need to add some member variables to our thread pool to ensure that no race conditions occurs between threads manipulating the task queue.</p><div class="language-cpp highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre><td class="rouge-code"><pre><span class="nl">private:</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="kr">thread</span><span class="o">&gt;</span> <span class="n">mWorkerThreads</span><span class="p">;</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">deque</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">ITask</span><span class="o">&gt;&gt;</span> <span class="n">mTasks</span><span class="p">;</span>  
+
+  <span class="k">mutable</span> <span class="n">std</span><span class="o">::</span><span class="n">mutex</span> <span class="n">mTaskMutex</span><span class="p">;</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">condition_variable</span> <span class="n">mNewTasksCV</span><span class="p">;</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">mutex</span> <span class="n">mNewTaskMutex</span><span class="p">;</span>
+
+  <span class="n">std</span><span class="o">::</span><span class="n">atomic</span><span class="o">&lt;</span><span class="kt">bool</span><span class="o">&gt;</span> <span class="n">mStop</span><span class="p">;</span>
+</pre></table></code></div></div><p>The first thing we need to coordinate the accesses to the task queue is a way to ensure that only one thread at a time try to take away a task from it. This is the job of <code class="language-plaintext highlighter-rouge">mTaskMutex</code>. The second thing we need is a way to alert threads that a new task to run is available. This is done through the <code class="language-plaintext highlighter-rouge">mNewTaskCV</code> condition variable. For those who don’t know what a condition variable is a data structure used to synchronize threads waiting for some condition, hence the name, to be met. Notice how there is a second mutex associated with the condition variable. This is because a condition variable needs to changed under a mutex to correctly sends its notification(s) to waiting threads. Finally, we’ll use an atomic boolean to communicate to the workers that they should stop working. This will possibly happen in either the destructor (which we’ll get to) or when the client code explicitly request it through this method:</p><div class="language-cpp highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre><td class="rouge-code"><pre><span class="kt">void</span> <span class="nf">Stop</span><span class="p">()</span>
+<span class="p">{</span>
+  <span class="n">mStop</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+  <span class="c1">// Taking the mutex managing new task arrival so that our</span>
+  <span class="c1">// message will be heard by all</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">unique_lock</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">mutex</span><span class="o">&gt;</span> <span class="n">lock</span><span class="p">(</span><span class="n">mNewTaskMutex</span><span class="p">);</span>
+  <span class="c1">// Notifying every thread waiting on new task that there</span>
+  <span class="c1">// won't be any</span>
+  <span class="n">mNewTasksCV</span><span class="p">.</span><span class="n">notify_all</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></table></code></div></div><p>Now that we have everything that we need to avoid race conditions within our <code class="language-plaintext highlighter-rouge">ThreadPool</code>, we can proceed with adding task to it. The method by which this will be achieved looks like this:</p><div class="language-cpp highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+</pre><td class="rouge-code"><pre><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">F</span><span class="p">&gt;</span>
+<span class="n">std</span><span class="o">::</span><span class="n">future</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">result_of_t</span><span class="o">&lt;</span><span class="n">F</span><span class="p">()</span><span class="o">&gt;&gt;</span> <span class="n">AddTask</span><span class="p">(</span><span class="n">F</span><span class="o">&amp;&amp;</span> <span class="n">func</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">lock</span><span class="p">(</span><span class="n">mTaskMutex</span><span class="p">,</span> <span class="n">mNewTaskMutex</span><span class="p">);</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">unique_lock</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">mutex</span><span class="o">&gt;</span><span class="p">(</span><span class="n">mNewTaskMutex</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">adopt_lock</span><span class="p">);</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">lock_guard</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">mutex</span><span class="o">&gt;</span><span class="p">(</span><span class="n">mTaskMutex</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">adopt_lock</span><span class="p">);</span>
+
+  <span class="k">auto</span> <span class="n">task</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">make_unique</span><span class="o">&lt;</span><span class="n">ConcreteTask</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">result_of_t</span><span class="o">&lt;</span><span class="n">F</span><span class="p">()</span><span class="o">&gt;&gt;&gt;</span><span class="p">([</span><span class="n">func</span><span class="p">]()</span> <span class="p">{</span> <span class="k">return</span> <span class="n">func</span><span class="p">();</span> <span class="p">});</span>
+
+  <span class="k">auto</span> <span class="n">fut</span> <span class="o">=</span> <span class="n">task</span><span class="o">-&gt;</span><span class="n">GetFuture</span><span class="p">();</span>
+
+  <span class="n">mTasks</span><span class="p">.</span><span class="n">emplace_back</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">task</span><span class="p">));</span>
+
+  <span class="c1">// Notifying the worker threads that a new task is available</span>
+  <span class="n">mNewTasksCV</span><span class="p">.</span><span class="n">notify_one</span><span class="p">();</span>
+  <span class="k">return</span> <span class="n">fut</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></table></code></div></div><p>Let’s go over it line by line. In the declaration, despite the template wizardry at work, we simply announce that we will return a future whose type corresponds to the type of the value returned by executing a callable of type <code class="language-plaintext highlighter-rouge">F</code>. Then, inside the function, we take hold of both the mutexes used to manage the task queue. This is done to both avoid data races and later notify some worker threads that a new task is avalaible. To lock the mutexes using <a href="http://en.cppreference.com/w/cpp/thread/lock"><code class="language-plaintext highlighter-rouge">std::lock</code></a> because this function is written with a deadlock avoiding algorithm saving us lots of trouble. The mutexes are then given to adoption to a <a href="http://en.cppreference.com/w/cpp/thread/unique_lock"><code class="language-plaintext highlighter-rouge">std::unique_lock</code></a>, because of how <a href="http://en.cppreference.com/w/cpp/thread/condition_variable"><code class="language-plaintext highlighter-rouge">std::condition_variable</code></a> works, and a <a href="http://en.cppreference.com/w/cpp/thread/lock_guard"><code class="language-plaintext highlighter-rouge">std::lock_guard</code></a>, because we want to release the mutex when we’re done. Afterwards, in rapid succession, the task is created, we get a future from it before moving it in the task queue, we give a shout to a thread and we’re done.</p><p>After adding a task, the most important thing to do is taking a task from the queue to execute it. To this end, I propose the following method:</p><div class="language-cpp highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+</pre><td class="rouge-code"><pre><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">ITask</span><span class="o">&gt;</span> <span class="n">GetNextTask</span><span class="p">()</span>
+<span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">Empty</span><span class="p">())</span>
+  <span class="p">{</span>
+    <span class="c1">// No task in the queue. Waiting until the situation changes</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">unique_lock</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">mutex</span><span class="o">&gt;</span> <span class="n">lock</span><span class="p">(</span><span class="n">mNewTaskMutex</span><span class="p">);</span>
+    <span class="n">mNewTasksCV</span><span class="p">.</span><span class="n">wait</span><span class="p">(</span><span class="n">lock</span><span class="p">,</span> <span class="p">[</span><span class="k">this</span><span class="p">]()</span> <span class="p">{</span> <span class="k">return</span> <span class="o">!</span><span class="n">mTasks</span><span class="p">.</span><span class="n">empty</span><span class="p">();</span> <span class="p">});</span>
+  <span class="p">}</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="n">mTasks</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span>
+    <span class="k">return</span> <span class="nb">nullptr</span><span class="p">;</span>
+
+  <span class="n">std</span><span class="o">::</span><span class="n">lock_guard</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">mutex</span><span class="o">&gt;</span> <span class="n">lg</span><span class="p">{</span> <span class="n">mTaskMutex</span> <span class="p">};</span>
+  <span class="c1">// Get a task from the queue to feed the workers</span>
+  <span class="k">auto</span> <span class="n">next</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">mTasks</span><span class="p">.</span><span class="n">front</span><span class="p">());</span>
+  <span class="n">mTasks</span><span class="p">.</span><span class="n">pop_front</span><span class="p">();</span>
+  <span class="k">return</span> <span class="n">next</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></table></code></div></div><p>Looking at it, we see that we first have to check if the queue is empty. If it is then we use the condition variable to wait until we get a signal that a new task was added to the queue. When we can proceed forward, we first make sure that the signal we received was sent because, if that’s the case, the mutex protecting the task queue is taken to ensure that no other worker thread steal the task we are about to take. Afterwards, we can just pop a task out of the queue to give to a thread to execute.</p><p>The only things left to complete the thread pool is to actually start it and to stop it. The way we’ll start it is by having it start its worker threads right from the moment it is created. This gives us the following constructor:</p><div class="language-cpp highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+</pre><td class="rouge-code"><pre><span class="n">ThreadPool</span><span class="p">(</span><span class="kt">size_t</span> <span class="n">nbThreads</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="kr">thread</span><span class="o">::</span><span class="n">hardware_concurrency</span><span class="p">())</span>
+    <span class="o">:</span> <span class="n">mStop</span> <span class="p">{</span> <span class="nb">false</span> <span class="p">}</span>
+<span class="p">{</span>
+  <span class="n">mThreads</span><span class="p">.</span><span class="n">reserve</span><span class="p">(</span><span class="n">nbThreads</span><span class="p">);</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">mWorkerThreads</span><span class="p">.</span><span class="n">capacity</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="n">mWorkerThreads</span><span class="p">.</span><span class="n">emplace_back</span><span class="p">([</span><span class="k">this</span><span class="p">]()</span>
+    <span class="p">{</span>
+      <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">mStop</span><span class="p">)</span>
+      <span class="p">{</span>
+        <span class="k">auto</span> <span class="n">task</span> <span class="o">=</span> <span class="n">GetNextTask</span><span class="p">();</span>
+        <span class="n">task</span><span class="o">-&gt;</span><span class="n">Execute</span><span class="p">();</span>
+      <span class="p">}</span>
+    <span class="p">});</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></table></code></div></div><p>Quite simply, we just start some number of threads that will constantly ask for a new that to be run. This will go on until a stop signal is given to the <code class="language-plaintext highlighter-rouge">ThreadPool</code>.</p><div class="language-cpp highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre><td class="rouge-code"><pre><span class="o">~</span><span class="n">ThreadPool</span><span class="p">()</span>
+<span class="p">{</span>
+  <span class="n">Stop</span><span class="p">();</span>
+  <span class="k">for</span> <span class="p">(</span><span class="k">auto</span><span class="o">&amp;</span> <span class="n">t</span> <span class="o">:</span> <span class="n">mWorkerThreads</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">t</span><span class="p">.</span><span class="n">joinable</span><span class="p">())</span>
+      <span class="n">t</span><span class="p">.</span><span class="n">join</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></table></code></div></div><p>To stop the <code class="language-plaintext highlighter-rouge">ThreadPool</code> activities we’ll make sure that a stop signal is sent before anything. Then, all that’s left to do is to join all of its workers.</p><p>How do we use it? Let’s have a look:</p><div class="language-cpp highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+</pre><td class="rouge-code"><pre><span class="n">std</span><span class="o">::</span><span class="n">array</span><span class="o">&lt;</span><span class="kt">bool</span><span class="p">,</span> <span class="mi">4</span><span class="o">&gt;</span>
+  <span class="n">SolveArrayProblemsPool</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">array</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">,</span> <span class="mi">4</span><span class="o">&gt;&amp;</span> <span class="n">arrays</span><span class="p">,</span>
+                         <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">array</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="mi">4</span><span class="o">&gt;&amp;</span> <span class="n">values</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">array</span><span class="o">&lt;</span><span class="kt">bool</span><span class="p">,</span> <span class="mi">4</span><span class="o">&gt;</span> <span class="n">answers</span> <span class="o">=</span> <span class="p">{</span> <span class="nb">false</span><span class="p">,</span> <span class="nb">false</span><span class="p">,</span> <span class="nb">false</span><span class="p">,</span> <span class="nb">false</span> <span class="p">};</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">array</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">future</span><span class="o">&lt;</span><span class="kt">bool</span><span class="o">&gt;</span><span class="p">,</span> <span class="mi">4</span><span class="o">&gt;</span> <span class="n">futureAnswers</span><span class="p">;</span>
+
+  <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">iProb</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">iProb</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">;</span> <span class="o">++</span><span class="n">iProb</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="n">futureAnswers</span><span class="p">[</span><span class="n">iProb</span><span class="p">]</span> <span class="o">=</span> <span class="n">pool</span><span class="p">.</span><span class="n">AddTask</span><span class="p">([</span><span class="o">&amp;</span><span class="n">arrays</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">vals</span><span class="p">,</span> <span class="n">iProb</span><span class="p">]()</span>
+    <span class="p">{</span>
+      <span class="k">return</span> <span class="n">std</span><span class="o">::</span><span class="n">find</span><span class="p">(</span><span class="n">arrays</span><span class="p">[</span><span class="n">iProb</span><span class="p">].</span><span class="n">begin</span><span class="p">(),</span>
+                       <span class="n">arrays</span><span class="p">[</span><span class="n">iProb</span><span class="p">].</span><span class="n">end</span><span class="p">(),</span>
+                       <span class="n">values</span><span class="p">[</span><span class="n">iProb</span><span class="p">])</span> <span class="o">!=</span> <span class="n">arrays</span><span class="p">[</span><span class="n">iProb</span><span class="p">].</span><span class="n">end</span><span class="p">();</span>
+    <span class="p">});</span>
+  <span class="p">}</span>
+
+  <span class="n">transform</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">begin</span><span class="p">(</span><span class="n">futureAnswers</span><span class="p">),</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">end</span><span class="p">(</span><span class="n">futureAnswers</span><span class="p">),</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">begin</span><span class="p">(</span><span class="n">answers</span><span class="p">),</span>
+            <span class="p">[](</span><span class="n">std</span><span class="o">::</span><span class="n">future</span><span class="o">&lt;</span><span class="kt">bool</span><span class="o">&gt;&amp;</span> <span class="n">__f__</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">f</span><span class="p">.</span><span class="n">get</span><span class="p">();</span> <span class="p">});</span>
+
+  <span class="k">return</span> <span class="n">answers</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></table></code></div></div><p>Again, we parallelize our application by having different threads solve differents problem as was the case in the outer parallelism approach demonstrated last month.</p><p>And now, for the question we’re all waiting for: how does it compare to our previous solution? Let’s have a look:</p><div class="table-wrapper"><table><thead><tr><th style="text-align: left">Method<th style="text-align: right">Time (ms)<tbody><tr><td style="text-align: left">Sequential<td style="text-align: right">141.84<tr><td style="text-align: left">Inner parallelism<td style="text-align: right">94.44<tr><td style="text-align: left">Outer parallelism<td style="text-align: right">90.72<tr><td style="text-align: left"><em><strong>Thread Pool</strong></em><td style="text-align: right"><em><strong>91.96</strong></em></table></div><p>Damn! All that effort for nothing!</p><figure><p style="text-align:center;"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="/assets/img/trying.jpg" alt="Image: Once again, Homer Simpson was proven right." /></p><figcaption><span><center><i>Once again, Homer Simpson was proven right.</i></center></span></figcaption></figure><p>While this seems like a lot of wasted efforts, look closely at the results. The <code class="language-plaintext highlighter-rouge">ThreadPool</code>-using solution is more efficient than two other proposed approachs. Moreover, it allows for more optimizations than the outer parallelism approach. Indeed, one could, for example, chop the problems to solve it in smaller pieces using more lightweight tasks while at the same time cranking up the number of threads avalaible to the <code class="language-plaintext highlighter-rouge">ThreadPool</code>. This wouldn’t be possible with the outer parallelism approach because we would then have to face the same issues that plagued the inner parallelism approach. All in all, I’d say that this approach still has a lot a potential but I’ll let you the readers decide what to think of it.</p><p>Finally, to wrap up this article and this series, to all that will take part in this year’s CS Games, go have fun!</p><p><strong>Coming up next month</strong>: Let’s change subjects and create a programming language!</p></div><div class="post-tail-wrapper text-muted"><div class="post-meta mb-3"> <i class="far fa-folder-open fa-fw mr-1"></i> <a href='/categories/cs-games-2015-parallelism-challenge/'>CS Games 2015 Parallelism Challenge</a></div><div class="post-tags"> <i class="fa fa-tags fa-fw mr-1"></i> <a href="/tags/parallelism/" class="post-tag no-text-decoration" >Parallelism</a></div><div class="post-tail-bottom d-flex justify-content-between align-items-center mt-3 pt-5 pb-2"><div class="license-wrapper"> This post is licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> by the author.</div><div class="share-wrapper"> <span class="share-label text-muted mr-1">Share</span> <span class="share-icons"> <a href="https://twitter.com/intent/tweet?text=CS Games 2015 Parallelism Challenge - A More Efficient Solution - /* Insert Code Here */&url=https://faouellet.github.io//csgames-efficient/" data-toggle="tooltip" data-placement="top" title="Twitter" target="_blank" rel="noopener" aria-label="Twitter"> <i class="fa-fw fab fa-twitter"></i> </a> <a href="https://www.facebook.com/sharer/sharer.php?title=CS Games 2015 Parallelism Challenge - A More Efficient Solution - /* Insert Code Here */&u=https://faouellet.github.io//csgames-efficient/" data-toggle="tooltip" data-placement="top" title="Facebook" target="_blank" rel="noopener" aria-label="Facebook"> <i class="fa-fw fab fa-facebook-square"></i> </a> <a href="https://telegram.me/share?text=CS Games 2015 Parallelism Challenge - A More Efficient Solution - /* Insert Code Here */&url=https://faouellet.github.io//csgames-efficient/" data-toggle="tooltip" data-placement="top" title="Telegram" target="_blank" rel="noopener" aria-label="Telegram"> <i class="fa-fw fab fa-telegram"></i> </a> <i class="fa-fw fas fa-link small" onclick="copyLink()" data-toggle="tooltip" data-placement="top" title="Copy link"></i> </span></div></div></div></div></div><div id="panel-wrapper" class="col-xl-3 pl-2 text-muted topbar-down"><div class="access"><div id="access-tags"> <span>Trending Tags</span><div class="d-flex flex-wrap mt-3 mb-1 mr-3"> <a class="post-tag" href="/tags/database/">Database</a> <a class="post-tag" href="/tags/source-control/">Source Control</a> <a class="post-tag" href="/tags/c/">C++</a> <a class="post-tag" href="/tags/build-system/">Build System</a> <a class="post-tag" href="/tags/parallelism/">Parallelism</a> <a class="post-tag" href="/tags/compiler-development/">Compiler Development</a> <a class="post-tag" href="/tags/software-development/">Software Development</a> <a class="post-tag" href="/tags/c-amp/">C++AMP</a> <a class="post-tag" href="/tags/concurrency/">Concurrency</a> <a class="post-tag" href="/tags/gpgpu/">GPGPU</a></div></div></div></div></div><div class="row"><div class="col-12 col-lg-11 col-xl-8"><div id="post-extend-wrapper" class="pl-1 pr-1 pl-sm-2 pr-sm-2 pl-md-4 pr-md-4"><div id="related-posts" class="mt-5 mb-2 mb-sm-4"><h3 class="pt-2 mt-1 mb-4 ml-1" data-toc-skip>Further Reading</h3><div class="card-deck mb-4"><div class="card"> <a href="/race-detection/"><div class="card-body"> <span class="timeago small" > Oct 10, 2016 <i class="unloaded">2016-10-10T00:00:00-04:00</i> </span><h3 class="pt-0 mt-1 mb-3" data-toc-skip>Homemade data race detector</h3><div class="text-muted small"><p> Note 1: What I’m presenting here is evidently not a production grade tool. In fact, I’d say it barely even qualify as a proof of concept. If you really want to debug multithreaded programs, please ...</p></div></div></a></div><div class="card"> <a href="/ampr/"><div class="card-body"> <span class="timeago small" > Nov 19, 2016 <i class="unloaded">2016-11-19T00:00:00-05:00</i> </span><h3 class="pt-0 mt-1 mb-3" data-toc-skip>AMPR</h3><div class="text-muted small"><p> All the code for this article can be found here. Have you ever asked yourself: how do regexes works? Or, even better, have you ever thought that you could totally implement a regex engine that...</p></div></div></a></div><div class="card"> <a href="/csgames-simple/"><div class="card-body"> <span class="timeago small" > Feb 5, 2016 <i class="unloaded">2016-02-05T00:00:00-05:00</i> </span><h3 class="pt-0 mt-1 mb-3" data-toc-skip>CS Games 2015 Parallelism Challenge - A Simple Solution</h3><div class="text-muted small"><p> What’s up people! Now that a month has passed, surely you have found a, at least simple, solution to the challenge? Now, as I promised last month, let’s go over a simple solution for this challe...</p></div></div></a></div></div></div><div class="post-navigation d-flex justify-content-between"> <a href="/csgames-simple/" class="btn btn-outline-primary"><p>CS Games 2015 Parallelism Challenge - A Simple Solution</p></a> <a href="/toslang-intro/" class="btn btn-outline-primary"><p>Let's implement a language - Part 0 - Intro</p></a></div><div id="disqus" class="pt-2 pb-2"><p class="font-italic text-center text-muted small"> Comments powered by <a href="https://disqus.com/">Disqus</a>.</p></div><script src="/assets/js/lib/jquery.disqusloader.min.js"></script> <script> var options = { scriptUrl: '//insertcodehere.disqus.com/embed.js', disqusConfig: function() { this.page.url = 'https://faouellet.github.io//csgames-efficient/'; this.page.identifier = '/csgames-efficient/'; } }; $.disqusLoader('#disqus', options); </script></div></div></div><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lozad/dist/lozad.min.js"></script> <script type="text/javascript"> const imgs = document.querySelectorAll('#post-wrapper img'); const observer = lozad(imgs); observer.observe(); </script><footer class="d-flex w-100 justify-content-center"><div class="d-flex justify-content-between align-items-center"><div class="footer-left"><p class="mb-0"> © 2021 <a href="https://github.com/faouellet">Félix-Antoine Ouellet</a>. <span data-toggle="tooltip" data-placement="top" title="Except where otherwise noted, the blog posts on this site are licensed under the Creative Commons Attribution 4.0 International (CC BY 4.0) License by the author.">Some rights reserved.</span></p></div><div class="footer-right"><p class="mb-0"> Powered by <a href="https://jekyllrb.com" target="_blank" rel="noopener">Jekyll</a> with <a href="https://github.com/cotes2020/jekyll-theme-chirpy/" target="_blank" rel="noopener">Chirpy</a> theme.</p></div></div></footer></div><div id="search-result-wrapper" class="d-flex justify-content-center unloaded"><div class="col-12 col-xl-11 post-content"><div id="search-hints"><h4 class="text-muted mb-4">Trending Tags</h4><a class="post-tag" href="/tags/database/">Database</a> <a class="post-tag" href="/tags/source-control/">Source Control</a> <a class="post-tag" href="/tags/c/">C++</a> <a class="post-tag" href="/tags/build-system/">Build System</a> <a class="post-tag" href="/tags/parallelism/">Parallelism</a> <a class="post-tag" href="/tags/compiler-development/">Compiler Development</a> <a class="post-tag" href="/tags/software-development/">Software Development</a> <a class="post-tag" href="/tags/c-amp/">C++AMP</a> <a class="post-tag" href="/tags/concurrency/">Concurrency</a> <a class="post-tag" href="/tags/gpgpu/">GPGPU</a></div><div id="search-results" class="d-flex flex-wrap justify-content-center text-muted mt-3"></div></div></div></div><div id="mask"></div><a id="back-to-top" href="#" aria-label="back-to-top" class="btn btn-lg btn-box-shadow" role="button"> <i class="fas fa-angle-up"></i> </a> <script src="https://cdn.jsdelivr.net/npm/simple-jekyll-search@1.7.3/dest/simple-jekyll-search.min.js"></script> <script> SimpleJekyllSearch({ searchInput: document.getElementById('search-input'), resultsContainer: document.getElementById('search-results'), json: '/assets/js/data/search.json', searchResultTemplate: '<div class="pl-1 pr-1 pl-sm-2 pr-sm-2 pl-lg-4 pr-lg-4 pl-xl-0 pr-xl-0"> <a href="https://faouellet.github.io/{url}">{title}</a><div class="post-meta d-flex flex-column flex-sm-row text-muted mt-1 mb-1"><div class="mr-sm-4"><i class="far fa-folder fa-fw"></i>{categories}</div><div><i class="fa fa-tag fa-fw"></i>{tags}</div></div><p>{snippet}</p></div>', noResultsText: '<p class="mt-5">Oops! No result founds.</p>' }); </script>

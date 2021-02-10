@@ -1,0 +1,211 @@
+<!DOCTYPE html><html lang="en" mode="dark" ><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><meta name="theme" content="Chirpy v2.7.1"><meta name="generator" content="Jekyll v4.1.1" /><meta property="og:title" content="Let’s implement a language - Part 2 - The AST" /><meta name="author" content="Félix-Antoine Ouellet" /><meta property="og:locale" content="en_US" /><meta name="description" content="In which we learn what those three letters mean." /><meta property="og:description" content="In which we learn what those three letters mean." /><link rel="canonical" href="https://faouellet.github.io//toslang-ast/" /><meta property="og:url" content="https://faouellet.github.io//toslang-ast/" /><meta property="og:site_name" content="/* Insert Code Here */" /><meta property="og:type" content="article" /><meta property="article:published_time" content="2016-06-03T00:00:00-04:00" /><meta name="twitter:card" content="summary" /><meta property="twitter:title" content="Let’s implement a language - Part 2 - The AST" /> <script type="application/ld+json"> {"description":"In which we learn what those three letters mean.","url":"https://faouellet.github.io//toslang-ast/","headline":"Let’s implement a language - Part 2 - The AST","dateModified":"2016-06-03T00:00:00-04:00","@type":"BlogPosting","datePublished":"2016-06-03T00:00:00-04:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://faouellet.github.io//toslang-ast/"},"author":{"@type":"Person","name":"Félix-Antoine Ouellet"},"@context":"https://schema.org"}</script><title>Let's implement a language - Part 2 - The AST | /* Insert Code Here */</title><link rel="shortcut icon" href="/assets/img/favicons/favicon.ico" type="image/x-icon"><link rel="icon" href="/assets/img/favicons/favicon.ico" type="image/x-icon"><link rel="apple-touch-icon" href="/assets/img/favicons/apple-icon.png"><link rel="apple-touch-icon" href="/assets/img/favicons/apple-icon-precomposed.png"><link rel="apple-touch-icon" sizes="57x57" href="/assets/img/favicons/apple-icon-57x57.png"><link rel="apple-touch-icon" sizes="60x60" href="/assets/img/favicons/apple-icon-60x60.png"><link rel="apple-touch-icon" sizes="72x72" href="/assets/img/favicons/apple-icon-72x72.png"><link rel="apple-touch-icon" sizes="76x76" href="/assets/img/favicons/apple-icon-76x76.png"><link rel="apple-touch-icon" sizes="114x114" href="/assets/img/favicons/apple-icon-114x114.png"><link rel="apple-touch-icon" sizes="120x120" href="/assets/img/favicons/apple-icon-120x120.png"><link rel="apple-touch-icon" sizes="144x144" href="/assets/img/favicons/apple-icon-144x144.png"><link rel="apple-touch-icon" sizes="152x152" href="/assets/img/favicons/apple-icon-152x152.png"><link rel="apple-touch-icon" sizes="180x180" href="/assets/img/favicons/apple-icon-180x180.png"><link rel="icon" type="image/png" sizes="192x192" href="/assets/img/favicons/android-icon-192x192.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicons/favicon-32x32.png"><link rel="icon" type="image/png" sizes="96x96" href="/assets/img/favicons/favicon-96x96.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicons/favicon-16x16.png"><link rel="manifest" href="/assets/img/favicons/manifest.json"><meta name='msapplication-config' content='/assets/img/favicons/browserconfig.xml'><meta name="msapplication-TileColor" content="#ffffff"><meta name="msapplication-TileImage" content="/assets/img/favicons/ms-icon-144x144.png"><meta name="theme-color" content="#ffffff"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://fonts.gstatic.com"><link rel="preconnect" href="https://www.google-analytics.com" crossorigin="use-credentials"><link rel="dns-prefetch" href="https://www.google-analytics.com"><link rel="preconnect" href="https://www.googletagmanager.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><link rel="preconnect" href="cdn.jsdelivr.net"><link rel="dns-prefetch" href="cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha256-LA89z+k9fjgMKQ/kq4OO2Mrf8VltYml/VES+Rg0fh20=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.11.2/css/all.min.css" integrity="sha256-+N4/V/SbAFiW1MPBCXnfnP9QSN3+Keu+NlB+0ev/YKQ=" crossorigin="anonymous"><link rel="preload" href="/assets/css/post.css" as="style"><link rel="stylesheet" href="/assets/css/post.css"><link rel="preload" as="style" href="/assets/css/lib/bootstrap-toc.min.css"><link rel="stylesheet" href="/assets/css/lib/bootstrap-toc.min.css" /> <script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script> <script defer src="https://cdn.jsdelivr.net/combine/npm/popper.js@1.15.0,npm/bootstrap@4/dist/js/bootstrap.min.js"></script> <script async src="/assets/js/post.min.js"></script> <script defer src="/app.js"></script> <script defer src="https://www.googletagmanager.com/gtag/js?id=UA-71911238-1"></script> <script> document.addEventListener("DOMContentLoaded", function(event) { window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'UA-71911238-1'); }); </script><body data-spy="scroll" data-target="#toc"><div id="sidebar" class="d-flex flex-column align-items-end"><div class="profile-wrapper text-center"><div id="avatar"> <a href="/" alt="avatar" class="mx-auto"> <img src="/assets/img/avatar.jpg" alt="avatar" onerror="this.style.display='none'"> </a></div><div class="site-title mt-3"> <a href="/">/* Insert Code Here */</a></div><div class="site-subtitle font-italic"></div></div><ul class="w-100"><li class="nav-item"> <a href="/" class="nav-link"> <i class="fa-fw fas fa-home ml-xl-3 mr-xl-3 unloaded"></i> <span>HOME</span> </a><li class="nav-item"> <a href="/tabs/categories/" class="nav-link"> <i class="fa-fw fas fa-stream ml-xl-3 mr-xl-3 unloaded"></i> <span>CATEGORIES</span> </a><li class="nav-item"> <a href="/tabs/tags/" class="nav-link"> <i class="fa-fw fas fa-tags ml-xl-3 mr-xl-3 unloaded"></i> <span>TAGS</span> </a><li class="nav-item"> <a href="/tabs/archives/" class="nav-link"> <i class="fa-fw fas fa-archive ml-xl-3 mr-xl-3 unloaded"></i> <span>ARCHIVES</span> </a><li class="nav-item"> <a href="/tabs/about/" class="nav-link"> <i class="fa-fw fas fa-info ml-xl-3 mr-xl-3 unloaded"></i> <span>ABOUT</span> </a></ul><div class="sidebar-bottom mt-auto d-flex flex-wrap justify-content-center"> <a href="https://github.com/faouellet" aria-label="github" target="_blank" rel="noopener"> <i class="fab fa-github-alt"></i> </a> <a href="https://www.linkedin.com/in/felixantoineouellet/" aria-label="linkedin" target="_blank" rel="noopener"> <i class="fab fa-linkedin"></i> </a> <a href=" javascript:location.href = 'mailto:' + ['faouellet','gmail.com'].join('@')" aria-label="email" > <i class="fas fa-envelope"></i> </a> <a href="/feed.xml" aria-label="rss" > <i class="fas fa-rss"></i> </a></div></div><div id="topbar-wrapper" class="row justify-content-center topbar-down"><div id="topbar" class="col-11 d-flex h-100 align-items-center justify-content-between"> <span id="breadcrumb"> <span> <a href="/"> Posts </a> </span> <span>Let's implement a language - Part 2 - The AST</span> </span> <i id="sidebar-trigger" class="fas fa-bars fa-fw"></i><div id="topbar-title"> Post</div><i id="search-trigger" class="fas fa-search fa-fw"></i> <span id="search-wrapper" class="align-items-center"> <i class="fas fa-search fa-fw"></i> <input class="form-control" id="search-input" type="search" aria-label="search" placeholder="Search..."> <i class="fa fa-times-circle fa-fw" id="search-cleaner"></i> </span> <span id="search-cancel" >Cancel</span></div></div><div id="main-wrapper"><div id="main"><div class="row"><div id="post-wrapper" class="col-12 col-lg-11 col-xl-8"><div class="post pl-1 pr-1 pl-sm-2 pr-sm-2 pl-md-4 pr-md-4"><h1 data-toc-skip>Let's implement a language - Part 2 - The AST</h1><div class="post-meta text-muted d-flex flex-column"><div> <span class="timeago " data-toggle="tooltip" data-placement="bottom" title="Fri, Jun 3, 2016, 12:00 AM -0400" > Jun 3, 2016 <i class="unloaded">2016-06-03T00:00:00-04:00</i> </span> by <span class="author"> Félix-Antoine Ouellet </span></div><div> <span class="readtime" data-toggle="tooltip" data-placement="bottom" title="1465 words">8 min</span></div></div><div class="post-content"><p>Hey everyone!</p><p>Last time, we opened up the black box that is a modern compiler to see that it what is fact three black boxes linked together.</p><figure><p style="text-align:center;"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="/assets/img/SimpleCompiler.png" alt="Image: Those three again" /></p><figcaption><span><center><i>Those three again</i></center></span></figcaption></figure><p>We then delved into the frontend of the compiler to discover that (surprise!) once again we can divide it up into three black boxes. Finally, in the words of Samuel L. Jackson, having had enough of these motherf***ing black boxes in this motherf***ing compiler, we opened the first of them by building a lexer for TosLang.</p><figure><p style="text-align:center;"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="/assets/img/Frontend2.png" alt="Image: That's one down" /></p><figcaption><span><center><i>That's one down</i></center></span></figcaption></figure><p>Now, logic would dictate that we jump right into the parser. However, since what we want to produce next (the mysterious AST) is quite a bit more complex than a simple sequence of tokens we first need to think about what we are going to build.</p><h2 id="how-do-we-structure-a-programming-language">How do we structure a (programming) language?</h2><p>Let’s think back to our days in primary school. One of things that you (hopefully) learned there, is how to construct sentences. As you should know, a traditional sentence is composed of a subject that will perform the action of a verb. Sometime you throw in a complement or an adverb just to have enough word to respect the minimum word count. Basically, we learned that a language is a set of words that we can freely mix as long as we follow some rules which are defined by what we call a grammar.</p><p>Well, it might be disappointing to some, but programming languages are exactly the same in that regard. They have some syntactic elements (tokens) that we can mix together as we want as long we follow the grammar of the language.</p><p>However, take note that merely stitching language constructs together so that they respect the grammar won’t necessarily produce a valid program. For example, many languages that require a variable to be declared before it is used do not have this rule in their grammar. In a later post, I’ll go over the techniques used by a compiler make sure that a program makes sense.</p><figure><p style="text-align:center;"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="/assets/img/grammar.jpg" alt="Image: Grammatically correct" /></p><figcaption><span><center><i>Grammatically correct</i></center></span></figcaption></figure><p>Moving along, a programming language grammatical elements can be divided into three categories (declaration, statement, expression) which I will proceed to describe.</p><h2 id="what-is-a-declaration">What is a declaration?</h2><p>The easiest one first. A declaration simply introduces a new named element into a program. For example, this a variable declaration in TosLang:</p><div class="language-cpp highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre><td class="rouge-code"><pre><span class="n">var</span> <span class="n">MyInt</span> <span class="o">:</span> <span class="n">Int</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span> <span class="c1">// Declaration of MyInt</span>
+</pre></table></code></div></div><h2 id="what-is-a-statement">What is a statement?</h2><p>A statement is a piece of a program that is to be executed. Note that ‘piece of a program’ doesn’t necessarily means a single line in a program. Witness:</p><div class="language-cpp highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre><td class="rouge-code"><pre><span class="k">while</span> <span class="n">SomeVar</span> <span class="o">&lt;</span> <span class="mi">10</span>
+<span class="p">{</span>
+  <span class="n">MyInt</span> <span class="o">=</span> <span class="n">MyIntVar</span> <span class="o">+</span> <span class="n">SomeVar</span><span class="p">;</span>
+  <span class="n">SomeVar</span> <span class="o">=</span> <span class="n">SomeVar</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></table></code></div></div><p>This here is a while statement. The interesting part is that this while statement also contains a compound statement (i.e. a list of statements within braces) that serves as its body.</p><h2 id="what-is-an-expression">What is an expression?</h2><p>An expression is fragment of a program that will produce a value. In other word, a statement that produces something. Some examples (focus on the right hand side):</p><div class="language-cpp highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre><td class="rouge-code"><pre><span class="n">MyInt</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>                <span class="c1">// A literal number expression</span>
+<span class="n">MyInt</span> <span class="o">=</span> <span class="n">MyInt</span> <span class="o">+</span> <span class="mi">2</span><span class="p">;</span>        <span class="c1">// A binary expression between an identifier</span>
+                          <span class="c1">// expression and a number expression</span>
+<span class="n">MyInt</span> <span class="o">=</span> <span class="n">SomeFunc</span><span class="p">(</span><span class="n">MyInt</span><span class="p">);</span>  <span class="c1">// A function call expression</span>
+</pre></table></code></div></div><h2 id="you-still-didnt-explain-what-an-ast-is">You still didn’t explain what an AST is?</h2><p>I see you were paying attention! The abstract syntax tree (so that’s what AST means!) is a data structure that models the relations between grammatical elements found in a program written in a given language. The ‘abstract’ part comes from the fact that this tree doesn’t model every single detail of the language syntax. For example, in our case, a ‘if’ statement will be represented solely by two nodes: one for the condition and one for the statements to execute when the condition is true (remember: no ‘else’ in TosLang for the moment).</p><p>Here’s a concrete representation of what I’m trying to say. If you take this program here:</p><div class="language-cpp highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre><td class="rouge-code"><pre><span class="n">fn</span> <span class="n">main</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Void</span>
+<span class="p">{</span>
+  <span class="n">print</span> <span class="s">"Hello World!"</span><span class="p">;</span>
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></table></code></div></div><p>And create an AST out of it, you will get this:</p><figure><p style="text-align:center;"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="/assets/img/AST.bmp" alt="Image: That's an AST!" /></p><figcaption><span><center><i>That's an AST!</i></center></span></figcaption></figure><h2 id="lets-start-implementing">Let’s start implementing</h2><p>You could probably guess by my examples of the different grammatical categories that we would be creating quite a hierarchy of AST nodes. For our base class, we will have the following:</p><div class="language-cpp highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+</pre><td class="rouge-code"><pre><span class="k">class</span> <span class="nc">ASTNode</span><span class="p">;</span>
+
+<span class="k">using</span> <span class="n">ChildNodes</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">ASTNode</span><span class="o">&gt;&gt;</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">ASTNode</span>
+<span class="p">{</span>
+<span class="nl">public:</span>
+  <span class="k">enum</span> <span class="k">class</span> <span class="nc">NodeKind</span>
+  <span class="p">{</span>
+    <span class="c1">// Misc</span>
+    <span class="n">ERROR</span><span class="p">,</span>
+
+    <span class="c1">// Declarations</span>
+    <span class="n">FUNCTION_DECL</span><span class="p">,</span> <span class="n">PROGRAM_DECL</span><span class="p">,</span> <span class="n">PARAM_VAR_DECL</span><span class="p">,</span> <span class="n">VAR_DECL</span><span class="p">,</span>
+
+    <span class="c1">// Expressions</span>
+    <span class="n">BINARY_EXPR</span><span class="p">,</span> <span class="n">BOOLEAN_EXPR</span><span class="p">,</span> <span class="n">CALL_EXPR</span><span class="p">,</span> <span class="n">IDENTIFIER_EXPR</span><span class="p">,</span>
+    <span class="n">NUMBER_EXPR</span><span class="p">,</span> <span class="n">STRING_EXPR</span><span class="p">,</span>
+
+    <span class="c1">// Statements</span>
+    <span class="n">COMPOUND_STMT</span><span class="p">,</span> <span class="n">IF_STMT</span><span class="p">,</span> <span class="n">PRINT_STMT</span><span class="p">,</span> <span class="n">RETURN_STMT</span><span class="p">,</span>
+    <span class="n">SCAN_STMT</span><span class="p">,</span> <span class="n">WHILE_STMT</span><span class="p">,</span>
+  <span class="p">};</span>
+
+<span class="nl">public:</span>
+  <span class="k">explicit</span> <span class="n">ASTNode</span><span class="p">(</span><span class="n">NodeKind</span> <span class="n">kind</span> <span class="o">=</span> <span class="n">NodeKind</span><span class="o">::</span><span class="n">ERROR</span><span class="p">)</span>
+      <span class="o">:</span> <span class="n">mKind</span><span class="p">{</span> <span class="n">kind</span> <span class="p">},</span> <span class="n">mName</span><span class="p">{</span> <span class="p">}</span> <span class="p">{</span> <span class="p">}</span>
+  <span class="k">virtual</span> <span class="o">~</span><span class="n">ASTNode</span><span class="p">()</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
+
+<span class="nl">public:</span>
+  <span class="n">NodeKind</span> <span class="n">GetKind</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">mKind</span><span class="p">;</span> <span class="p">}</span>
+  <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">GetName</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">mName</span><span class="p">;</span> <span class="p">}</span>
+  <span class="k">const</span> <span class="n">ChildNodes</span><span class="o">&amp;</span> <span class="n">GetChildrenNodes</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">mChildren</span><span class="p">;</span> <span class="p">}</span>
+
+<span class="nl">protected:</span>
+  <span class="kt">void</span> <span class="n">AddChildNode</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">ASTNode</span><span class="o">&gt;&amp;&amp;</span> <span class="n">node</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="n">mChildren</span><span class="p">.</span><span class="n">emplace_back</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">node</span><span class="p">));</span>
+  <span class="p">}</span>
+
+  <span class="kt">void</span> <span class="n">AddChildNodes</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">ASTNode</span><span class="o">&gt;&gt;&amp;&amp;</span> <span class="n">nodes</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="n">mChildren</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">mChildren</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span>
+                     <span class="n">std</span><span class="o">::</span><span class="n">make_move_iterator</span><span class="p">(</span><span class="n">args</span><span class="p">.</span><span class="n">begin</span><span class="p">()),</span>
+                     <span class="n">std</span><span class="o">::</span><span class="n">make_move_iterator</span><span class="p">(</span><span class="n">args</span><span class="p">.</span><span class="n">end</span><span class="p">()));</span>
+  <span class="p">}</span>
+
+<span class="nl">private:</span>
+  <span class="n">NodeKind</span> <span class="n">mKind</span><span class="p">;</span>       <span class="cm">/*!&lt; Kind of the AST node */</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">mName</span><span class="p">;</span>    <span class="cm">/*!&lt; Name of the AST node. */</span>
+  <span class="n">ChildNodes</span> <span class="n">mChildren</span><span class="p">;</span> <span class="cm">/*!&lt; List of children nodes linked
+                             to this AST node */</span>
+<span class="p">};</span>
+</pre></table></code></div></div><p>As you can see, <code class="language-plaintext highlighter-rouge">ASTNode</code> has only the bare necessities. It has a way to identify what it is ( <code class="language-plaintext highlighter-rouge">mKind</code> ) that will allow us to forego the need for RTTI. It has a way to name it ( <code class="language-plaintext highlighter-rouge">mName</code> ) which will come in handy when we’ll want to print an AST to a stream. Lastly, it has a way to access its child nodes ( <code class="language-plaintext highlighter-rouge">mChildren</code> ) if it has any. It also offers methods by which every derived node class will be able to add one or more child nodes to its collection. This will be done by taking the ownership of any child node. Indeed, we are going to take full advantage of <code class="language-plaintext highlighter-rouge">std::unique_ptr</code> to clearly express the relation between a parent node and a child node in our AST.</p><p>Just below <code class="language-plaintext highlighter-rouge">ASTNode</code> in the node hierarchy are the three grammatical categories expressed as classes.</p><div class="language-cpp highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+</pre><td class="rouge-code"><pre><span class="k">class</span> <span class="nc">Decl</span> <span class="o">:</span> <span class="k">public</span> <span class="n">ASTNode</span>
+<span class="p">{</span>
+<span class="nl">public:</span>
+  <span class="k">explicit</span> <span class="n">Decl</span><span class="p">(</span><span class="n">NodeKind</span> <span class="n">kind</span><span class="p">)</span> <span class="o">:</span> <span class="n">ASTNode</span><span class="p">{</span> <span class="n">kind</span> <span class="p">}</span> <span class="p">{</span> <span class="p">}</span>
+  <span class="k">virtual</span> <span class="o">~</span><span class="n">Decl</span><span class="p">()</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">Expr</span> <span class="o">:</span> <span class="k">public</span> <span class="n">ASTNode</span>
+<span class="p">{</span>
+<span class="nl">public:</span>
+  <span class="k">explicit</span> <span class="n">Expr</span><span class="p">(</span><span class="n">NodeKind</span> <span class="n">kind</span><span class="p">)</span> <span class="o">:</span> <span class="n">ASTNode</span><span class="p">{</span> <span class="n">kind</span> <span class="p">}</span> <span class="p">{</span> <span class="p">}</span>
+  <span class="k">virtual</span> <span class="o">~</span><span class="n">Expr</span><span class="p">()</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
+  <span class="c1">// Quickly indicates if we're dealing with a literal or</span>
+  <span class="c1">// any other kind of expression</span>
+  <span class="k">virtual</span> <span class="kt">bool</span> <span class="n">IsLiteral</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="nb">false</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">Stmt</span> <span class="o">:</span> <span class="k">public</span> <span class="n">ASTNode</span>
+<span class="p">{</span>
+<span class="nl">public:</span>
+  <span class="k">explicit</span> <span class="n">Stmt</span><span class="p">(</span><span class="n">NodeKind</span> <span class="n">kind</span><span class="p">)</span> <span class="o">:</span> <span class="n">ASTNode</span><span class="p">{</span> <span class="n">kind</span> <span class="p">}</span> <span class="p">{</span> <span class="p">}</span>
+  <span class="k">virtual</span> <span class="o">~</span><span class="n">Stmt</span><span class="p">()</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></table></code></div></div><p>With these three defined, all that’s left is to implement a representation for every elements of the language.</p><h2 id="a-quick-example-of-a-concrete-ast-node">A quick example of a concrete AST node</h2><p>Since there are quite a lot of concrete nodes to define, I’ll only go over one of them to show you how it can be done. For more details, you can check out the TosLang compiler over <a href="https://github.com/faouellet/Tostitos/tree/master/TosLang">here</a>.</p><p>So, let’s say you want to define what a function call should look like as an AST node.</p><div class="language-cpp highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre><td class="rouge-code"><pre><span class="n">someFunc</span><span class="p">(</span><span class="s">"hello"</span><span class="p">,</span> <span class="nb">true</span><span class="p">,</span> <span class="n">MyInt</span> <span class="o">+</span> <span class="mi">2</span><span class="p">);</span>
+</pre></table></code></div></div><p>A quick glance at the above code, reveal that we need two things to characterize a call. First and most obvious is the name of the function being called. Second is a sequence of values that we call the arguments. AS we saw, a piece of program producing a value is classified as an expression. While on the suject of expressions, it is important to realize that a function call is also an expression. It can produce a value that can later be use by another part of a program. Putting these observations into code, we are able to produce the following implementation of a function call node.</p><div class="language-cpp highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre><td class="rouge-code"><pre><span class="k">class</span> <span class="nc">CallExpr</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Expr</span>
+<span class="p">{</span>
+<span class="nl">public:</span>
+  <span class="n">CallExpr</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">fnName</span><span class="p">,</span>
+           <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">Expr</span><span class="o">&gt;&gt;&amp;&amp;</span> <span class="n">args</span><span class="p">)</span>
+      <span class="o">:</span> <span class="n">Expr</span><span class="p">{</span> <span class="n">NodeKind</span><span class="o">::</span><span class="n">CALL_EXPR</span> <span class="p">}</span>
+  <span class="p">{</span>
+    <span class="n">mName</span> <span class="o">=</span> <span class="n">fnName</span><span class="p">;</span>
+    <span class="n">AddChildNodes</span><span class="p">(</span><span class="n">args</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="k">virtual</span> <span class="o">~</span><span class="n">CallExpr</span><span class="p">()</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></table></code></div></div><p>So there you have it.</p><p>Now, you might be wondering how we can instantiate and assemble nodes from a given program to create an AST. Well, you’ll have to wait until next month to find out!</p><p><strong>Coming up next month</strong>: A simple parser for a simple language</p></div><div class="post-tail-wrapper text-muted"><div class="post-meta mb-3"> <i class="far fa-folder-open fa-fw mr-1"></i> <a href='/categories/toslang/'>TosLang</a></div><div class="post-tags"> <i class="fa fa-tags fa-fw mr-1"></i> <a href="/tags/compiler-development/" class="post-tag no-text-decoration" >Compiler Development</a></div><div class="post-tail-bottom d-flex justify-content-between align-items-center mt-3 pt-5 pb-2"><div class="license-wrapper"> This post is licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> by the author.</div><div class="share-wrapper"> <span class="share-label text-muted mr-1">Share</span> <span class="share-icons"> <a href="https://twitter.com/intent/tweet?text=Let's implement a language - Part 2 - The AST - /* Insert Code Here */&url=https://faouellet.github.io//toslang-ast/" data-toggle="tooltip" data-placement="top" title="Twitter" target="_blank" rel="noopener" aria-label="Twitter"> <i class="fa-fw fab fa-twitter"></i> </a> <a href="https://www.facebook.com/sharer/sharer.php?title=Let's implement a language - Part 2 - The AST - /* Insert Code Here */&u=https://faouellet.github.io//toslang-ast/" data-toggle="tooltip" data-placement="top" title="Facebook" target="_blank" rel="noopener" aria-label="Facebook"> <i class="fa-fw fab fa-facebook-square"></i> </a> <a href="https://telegram.me/share?text=Let's implement a language - Part 2 - The AST - /* Insert Code Here */&url=https://faouellet.github.io//toslang-ast/" data-toggle="tooltip" data-placement="top" title="Telegram" target="_blank" rel="noopener" aria-label="Telegram"> <i class="fa-fw fab fa-telegram"></i> </a> <i class="fa-fw fas fa-link small" onclick="copyLink()" data-toggle="tooltip" data-placement="top" title="Copy link"></i> </span></div></div></div></div></div><div id="panel-wrapper" class="col-xl-3 pl-2 text-muted topbar-down"><div class="access"><div id="access-tags"> <span>Trending Tags</span><div class="d-flex flex-wrap mt-3 mb-1 mr-3"> <a class="post-tag" href="/tags/database/">Database</a> <a class="post-tag" href="/tags/source-control/">Source Control</a> <a class="post-tag" href="/tags/c/">C++</a> <a class="post-tag" href="/tags/build-system/">Build System</a> <a class="post-tag" href="/tags/parallelism/">Parallelism</a> <a class="post-tag" href="/tags/compiler-development/">Compiler Development</a> <a class="post-tag" href="/tags/software-development/">Software Development</a> <a class="post-tag" href="/tags/c-amp/">C++AMP</a> <a class="post-tag" href="/tags/concurrency/">Concurrency</a> <a class="post-tag" href="/tags/gpgpu/">GPGPU</a></div></div></div><div id="toc-wrapper" class="pl-0 pr-4 mb-5"> <span class="pl-3 pt-2 mb-2">Contents</span><nav id="toc" data-toggle="toc"></nav></div></div></div><div class="row"><div class="col-12 col-lg-11 col-xl-8"><div id="post-extend-wrapper" class="pl-1 pr-1 pl-sm-2 pr-sm-2 pl-md-4 pr-md-4"><div id="related-posts" class="mt-5 mb-2 mb-sm-4"><h3 class="pt-2 mt-1 mb-4 ml-1" data-toc-skip>Further Reading</h3><div class="card-deck mb-4"><div class="card"> <a href="/toslang-lexer/"><div class="card-body"> <span class="timeago small" > May 6, 2016 <i class="unloaded">2016-05-06T00:00:00-04:00</i> </span><h3 class="pt-0 mt-1 mb-3" data-toc-skip>Let's implement a language - Part 1 - The Lexer</h3><div class="text-muted small"><p> Hey everyone! This month marks the beginning of our journey into compiler development territory. For our first steps, we’ll start with an overview of modern compiler architecture and the developme...</p></div></div></a></div><div class="card"> <a href="/toslang-parser/"><div class="card-body"> <span class="timeago small" > Jul 1, 2016 <i class="unloaded">2016-07-01T00:00:00-04:00</i> </span><h3 class="pt-0 mt-1 mb-3" data-toc-skip>Let's implement a language - Part 3 - The Parser</h3><div class="text-muted small"><p> Hey everyone! Continuing our journey toward a fully working compiler, we will now build the parser that will allow us to produce an AST out of program we received as input. {% include figure....</p></div></div></a></div><div class="card"> <a href="/toslang-intro/"><div class="card-body"> <span class="timeago small" > Apr 1, 2016 <i class="unloaded">2016-04-01T00:00:00-04:00</i> </span><h3 class="pt-0 mt-1 mb-3" data-toc-skip>Let's implement a language - Part 0 - Intro</h3><div class="text-muted small"><p> Hey everyone! Starting this month, I’ll take you through my personal journey to develop a compiler for a language of my own design. While the next posts in this series will be quite technical, I’d...</p></div></div></a></div></div></div><div class="post-navigation d-flex justify-content-between"> <a href="/toslang-lexer/" class="btn btn-outline-primary"><p>Let's implement a language - Part 1 - The Lexer</p></a> <a href="/toslang-parser/" class="btn btn-outline-primary"><p>Let's implement a language - Part 3 - The Parser</p></a></div><div id="disqus" class="pt-2 pb-2"><p class="font-italic text-center text-muted small"> Comments powered by <a href="https://disqus.com/">Disqus</a>.</p></div><script src="/assets/js/lib/jquery.disqusloader.min.js"></script> <script> var options = { scriptUrl: '//insertcodehere.disqus.com/embed.js', disqusConfig: function() { this.page.url = 'https://faouellet.github.io//toslang-ast/'; this.page.identifier = '/toslang-ast/'; } }; $.disqusLoader('#disqus', options); </script></div></div></div><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lozad/dist/lozad.min.js"></script> <script type="text/javascript"> const imgs = document.querySelectorAll('#post-wrapper img'); const observer = lozad(imgs); observer.observe(); </script><footer class="d-flex w-100 justify-content-center"><div class="d-flex justify-content-between align-items-center"><div class="footer-left"><p class="mb-0"> © 2021 <a href="https://github.com/faouellet">Félix-Antoine Ouellet</a>. <span data-toggle="tooltip" data-placement="top" title="Except where otherwise noted, the blog posts on this site are licensed under the Creative Commons Attribution 4.0 International (CC BY 4.0) License by the author.">Some rights reserved.</span></p></div><div class="footer-right"><p class="mb-0"> Powered by <a href="https://jekyllrb.com" target="_blank" rel="noopener">Jekyll</a> with <a href="https://github.com/cotes2020/jekyll-theme-chirpy/" target="_blank" rel="noopener">Chirpy</a> theme.</p></div></div></footer></div><div id="search-result-wrapper" class="d-flex justify-content-center unloaded"><div class="col-12 col-xl-11 post-content"><div id="search-hints"><h4 class="text-muted mb-4">Trending Tags</h4><a class="post-tag" href="/tags/database/">Database</a> <a class="post-tag" href="/tags/source-control/">Source Control</a> <a class="post-tag" href="/tags/c/">C++</a> <a class="post-tag" href="/tags/build-system/">Build System</a> <a class="post-tag" href="/tags/parallelism/">Parallelism</a> <a class="post-tag" href="/tags/compiler-development/">Compiler Development</a> <a class="post-tag" href="/tags/software-development/">Software Development</a> <a class="post-tag" href="/tags/c-amp/">C++AMP</a> <a class="post-tag" href="/tags/concurrency/">Concurrency</a> <a class="post-tag" href="/tags/gpgpu/">GPGPU</a></div><div id="search-results" class="d-flex flex-wrap justify-content-center text-muted mt-3"></div></div></div></div><div id="mask"></div><a id="back-to-top" href="#" aria-label="back-to-top" class="btn btn-lg btn-box-shadow" role="button"> <i class="fas fa-angle-up"></i> </a> <script src="https://cdn.jsdelivr.net/npm/simple-jekyll-search@1.7.3/dest/simple-jekyll-search.min.js"></script> <script> SimpleJekyllSearch({ searchInput: document.getElementById('search-input'), resultsContainer: document.getElementById('search-results'), json: '/assets/js/data/search.json', searchResultTemplate: '<div class="pl-1 pr-1 pl-sm-2 pr-sm-2 pl-lg-4 pr-lg-4 pl-xl-0 pr-xl-0"> <a href="https://faouellet.github.io/{url}">{title}</a><div class="post-meta d-flex flex-column flex-sm-row text-muted mt-1 mb-1"><div class="mr-sm-4"><i class="far fa-folder fa-fw"></i>{categories}</div><div><i class="fa fa-tag fa-fw"></i>{tags}</div></div><p>{snippet}</p></div>', noResultsText: '<p class="mt-5">Oops! No result founds.</p>' }); </script>
